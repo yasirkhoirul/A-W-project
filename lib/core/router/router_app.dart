@@ -1,34 +1,47 @@
+import 'package:a_and_w/core/router/auth_router_listener.dart';
 import 'package:a_and_w/core/router/router.dart';
-import 'package:a_and_w/features/auth/persentation/login_page.dart';
-import 'package:a_and_w/features/auth/persentation/main_scaffold_auth.dart';
-import 'package:a_and_w/features/auth/persentation/signup_page.dart';
+import 'package:a_and_w/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:a_and_w/features/auth/presentation/page/login_page.dart';
+import 'package:a_and_w/features/auth/presentation/page/signup_page.dart';
+import 'package:a_and_w/features/barang/persentation/page/main_scaffold.dart';
 import 'package:go_router/go_router.dart';
 
 class RouterApp {
+  final AuthBloc authBloc;
+  const RouterApp(this.authBloc);
   GoRouter getGoRouter() => GoRouter(
+    refreshListenable: AuthRouterListener(bloc: authBloc),
     initialLocation: AppRouter.login,
     routes: [
+      GoRoute(path: AppRouter.login, builder: (context, state) => LoginPage()),
+      GoRoute(
+        path: AppRouter.signup,
+        builder: (context, state) => SignupPage(),
+      ),
       StatefulShellRoute.indexedStack(
-        builder: (context, state, navigationShell) => MainScaffoldAuth(navigationShellState: navigationShell,),
+        builder: (context, state, navigationShell) => MainScaffold(),
         branches: [
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: AppRouter.login,
-                builder: (context, state) => LoginPage(),
-              ),
-            ],
-          ),
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
-                path: AppRouter.signup,
-                builder: (context, state) => SignupPage(),
+                path: AppRouter.home,
+                builder: (context, state) => MainScaffold(),
               ),
             ],
           ),
         ],
       ),
     ],
+    redirect: (context, state) {
+      final bool isLoggedIN = authBloc.state is AuthSuccess;
+      final unsecurePahths = [AppRouter.login, AppRouter.signup];
+      final isInUnsecurePath = unsecurePahths.contains(state.fullPath);
+      if (!isLoggedIN && !isInUnsecurePath) {
+        return AppRouter.login;
+      } else if (isLoggedIN && isInUnsecurePath) {
+        return AppRouter.home;
+      }
+      return null;
+    },
   );
 }

@@ -1,0 +1,107 @@
+import 'package:a_and_w/core/utils/validators.dart';
+import 'package:a_and_w/core/widget/text_field.dart';
+import 'package:a_and_w/features/auth/domain/entities/user.dart';
+import 'package:a_and_w/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+class SignupPage extends StatefulWidget {
+  static final formKey = GlobalKey<FormState>();
+  const SignupPage({super.key});
+
+  @override
+  State<SignupPage> createState() => _SignupPageState();
+}
+
+class _SignupPageState extends State<SignupPage> {
+  final emailController = TextEditingController();
+  final namaController = TextEditingController();
+  final noHpController = TextEditingController();
+  final provinsiController = TextEditingController();
+  final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    namaController.dispose();
+    noHpController.dispose();
+    provinsiController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text("Sign Up")),
+      body: Form(
+        key: SignupPage.formKey,
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    MyTextField(
+                      label: "Email",
+                      validator: Validators.email,
+                      controller: emailController,
+                      keyboardType: TextInputType.emailAddress,
+                    ),
+                    MyTextField(
+                      label: "Nama",
+                      validator: (value) => Validators.required(value, fieldName: "Nama"),
+                      controller: namaController,
+                    ),
+                    MyTextField(
+                      label: "No Hp",
+                      validator: Validators.phone,
+                      controller: noHpController,
+                      keyboardType: TextInputType.phone,
+                    ),
+                    MyTextField(
+                      label: "Provinsi",
+                      validator: (value) => Validators.required(value, fieldName: "Provinsi"),
+                      controller: provinsiController,
+                    ),
+                    MyTextField.hide(
+                      label: "Password",
+                      validator: Validators.password,
+                      controller: passwordController,
+                    ),
+                    MyTextField.hide(
+                      label: "Confirm Password",
+                      validator: (value) => Validators.confirmPassword(value, passwordController.text),
+                      controller: confirmPasswordController,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      if (SignupPage.formKey.currentState!.validate()) {
+                        final UserEntities user = UserEntities(
+                          emailController.text,
+                          passwordController.text,
+                          namaController.text,
+                        );
+                        context.read<AuthBloc>().add(OnSignUpEvent(user));
+                      }
+                    },
+                    child: const Text("Sign Up"),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

@@ -6,6 +6,8 @@ class MyTextField extends StatefulWidget {
   final String label;
   final Widget? iconSuffix;
   final Widget? iconSuffixEffect;
+  final TextEditingController? controller;
+  final TextInputType? keyboardType;
 
   const MyTextField({
     super.key,
@@ -13,7 +15,9 @@ class MyTextField extends StatefulWidget {
     this.obscureText = false,
     required this.label,
     this.iconSuffix,
-    this.iconSuffixEffect, 
+    this.iconSuffixEffect,
+    this.controller,
+    this.keyboardType,
   });
   const MyTextField.hide({
     super.key,
@@ -21,8 +25,9 @@ class MyTextField extends StatefulWidget {
     this.obscureText = true,
     required this.label,
     this.iconSuffix = const Icon(Icons.visibility),
-    this.iconSuffixEffect = const Icon(Icons.visibility_off), 
-    
+    this.iconSuffixEffect = const Icon(Icons.visibility_off),
+    this.controller,
+    this.keyboardType,
   });
 
   @override
@@ -41,8 +46,10 @@ class _MyTextFieldState extends State<MyTextField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: widget.controller,
       obscureText: _isObscured,
       validator: widget.validator,
+      keyboardType: widget.keyboardType,
       decoration: InputDecoration(
         suffix: (widget.iconSuffix != null || widget.iconSuffixEffect != null) ? InkWell(
           onTap: () {
