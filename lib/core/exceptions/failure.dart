@@ -30,6 +30,11 @@ class NetworkFailure extends Failure {
   const NetworkFailure() : super('Tidak ada koneksi internet');
 }
 
+/// Failure untuk HTTP API errors
+class HttpApiFailure extends Failure {
+  const HttpApiFailure(super.message);
+}
+
 /// Failure untuk Unknown errors
 class UnknownFailure extends Failure {
   const UnknownFailure([String? message]) 

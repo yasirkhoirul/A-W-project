@@ -11,14 +11,19 @@ import 'package:a_and_w/features/auth/domain/usecases/sign_in_with_google_usecas
 import 'package:a_and_w/features/auth/domain/usecases/sign_out_usecase.dart';
 import 'package:a_and_w/features/auth/domain/usecases/sign_up_usecase.dart';
 import 'package:a_and_w/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:a_and_w/features/pengantaran/data/datasource/pengantaran_remote_datasource.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:http/http.dart' as http;
 
 final locator = GetIt.instance;
 
 Future<void> getitInit()async{
+  
+  //http client
+  locator.registerLazySingleton<http.Client>(() => http.Client());
 
   //firebase
   locator.registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance,);
@@ -32,7 +37,7 @@ Future<void> getitInit()async{
 
   //remote data sourcce
   locator.registerLazySingleton<RemoteAuthDataSource>(() => RemoteAuthDatasourceImpl(firebaseAuth: locator(), googleSignIn: locator()),);
-
+  locator.registerLazySingleton<PengantaranRemoteDatasource>(() => PengantaranRemoteDatasourceImpl(locator()),);
 
   //repository
   locator.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(remoteDataSource: locator(), localAuthDatasource: locator()),);

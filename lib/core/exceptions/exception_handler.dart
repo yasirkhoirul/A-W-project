@@ -1,3 +1,4 @@
+import 'package:a_and_w/core/exceptions/http_api_exception.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:a_and_w/core/exceptions/firebase_exception.dart';
 import 'package:a_and_w/core/exceptions/failure.dart';
@@ -19,6 +20,17 @@ class ExceptionHandler {
       if (error.plugin == 'firebase_storage') {
         return StorageFailure(StorageException.fromFirebase(error).message);
       }
+    }
+
+    // HTTP API exception
+    if (error is HttpException) {
+      if (error is HttpNetworkException) {
+        return const NetworkFailure();
+      }
+      if (error is HttpApiException && error.message.contains('Server')) {
+        return DatabaseFailure(error.message);
+      }
+      return HttpApiFailure(error.message);
     }
 
     // Custom Exceptions
