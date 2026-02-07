@@ -1,0 +1,47 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // ============================================
+    // Helper Functions
+    // ============================================
+    
+    // Cek apakah user sudah login
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    
+    // Cek apakah user adalah admin
+    function isAdmin() {
+      return isSignedIn() && 
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    
+    // Cek apakah user adalah pemilik dokumen
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+    
+    // Cek role tidak berubah (role baru == role lama)
+    function roleNotChanged() {
+      return request.resource.data.role == resource.data.role;
+    }
+    
+    // ============================================
+    // Users Collection
+    // ============================================
+    match /users/{userId} {
+      // CREATE: ❌ Tidak boleh dari client (hanya via Cloud Functions)
+      allow create: if false;
+      
+      // READ: ✅ Admin bisa baca semua, user hanya bisa baca milik sendiri
+      allow read: if isAdmin() || isOwner(userId);
+      
+      // UPDATE: ✅ Admin atau owner bisa update, TAPI role tidak boleh berubah
+      allow update: if (isAdmin() || isOwner(userId)) && roleNotChanged();
+      
+      // DELETE: ✅ Hanya admin yang bisa hapus
+      allow delete: if isAdmin();
+    }
+  }
+}
