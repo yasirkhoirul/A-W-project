@@ -1,5 +1,7 @@
 import 'package:a_and_w/features/auth/data/datasource/local_auth_datasource.dart';
 import 'package:a_and_w/features/auth/data/datasource/remote_auth_datasource.dart';
+import 'package:a_and_w/features/auth/data/model/profile_model.dart';
+import 'package:a_and_w/features/auth/domain/entities/profile.dart';
 import 'package:a_and_w/features/auth/domain/entities/user.dart';
 import 'package:a_and_w/features/auth/domain/repository/auth_repository.dart';
 import 'package:a_and_w/core/exceptions/exceptions.dart';
@@ -65,6 +67,27 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Either<Failure, void>> signOut() async {
     try {
       await remoteDataSource.signOut();
+      return const Right(null);
+    } catch (e) {
+      return Left(ExceptionHandler.handle(e));
+    }
+  }
+
+  @override
+  Stream<Either<Failure, Profile?>> getProfile(String uid) {
+    try {
+      return remoteDataSource.getProfile(uid).map((event) {
+        return Right(event?.toEntity());
+      },);
+    } catch (e) {
+      return Stream.value(Left(ExceptionHandler.handle(e)));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> updateProfile(Profile profile) async {
+    try {
+      await remoteDataSource.updateProfile(ProfileModel.fromEntity(profile));
       return const Right(null);
     } catch (e) {
       return Left(ExceptionHandler.handle(e));

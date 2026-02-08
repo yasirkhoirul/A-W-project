@@ -6,21 +6,22 @@
 import 'dart:async' as _i5;
 
 import 'package:a_and_w/core/exceptions/failure.dart' as _i6;
+import 'package:a_and_w/features/auth/domain/entities/profile.dart' as _i8;
 import 'package:a_and_w/features/auth/domain/entities/user.dart' as _i7;
 import 'package:a_and_w/features/auth/domain/repository/auth_repository.dart'
     as _i4;
 import 'package:a_and_w/features/pengantaran/domain/entities/data_cek_entity.dart'
-    as _i11;
-import 'package:a_and_w/features/pengantaran/domain/entities/data_track_entity.dart'
     as _i12;
+import 'package:a_and_w/features/pengantaran/domain/entities/data_track_entity.dart'
+    as _i13;
 import 'package:a_and_w/features/pengantaran/domain/entities/data_wilayah_entity.dart'
-    as _i10;
+    as _i11;
 import 'package:a_and_w/features/pengantaran/domain/repository/pengantaran_repository.dart'
-    as _i9;
+    as _i10;
 import 'package:dartz/dartz.dart' as _i2;
 import 'package:firebase_auth/firebase_auth.dart' as _i3;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:mockito/src/dummies.dart' as _i8;
+import 'package:mockito/src/dummies.dart' as _i9;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -127,6 +128,30 @@ class MockAuthRepository extends _i1.Mock implements _i4.AuthRepository {
           as _i5.Future<_i2.Either<_i6.Failure, _i3.User>>);
 
   @override
+  _i5.Stream<_i2.Either<_i6.Failure, _i8.Profile?>> getProfile(String? uid) =>
+      (super.noSuchMethod(
+            Invocation.method(#getProfile, [uid]),
+            returnValue:
+                _i5.Stream<_i2.Either<_i6.Failure, _i8.Profile?>>.empty(),
+          )
+          as _i5.Stream<_i2.Either<_i6.Failure, _i8.Profile?>>);
+
+  @override
+  _i5.Future<_i2.Either<_i6.Failure, void>> updateProfile(
+    _i8.Profile? profile,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#updateProfile, [profile]),
+            returnValue: _i5.Future<_i2.Either<_i6.Failure, void>>.value(
+              _FakeEither_0<_i6.Failure, void>(
+                this,
+                Invocation.method(#updateProfile, [profile]),
+              ),
+            ),
+          )
+          as _i5.Future<_i2.Either<_i6.Failure, void>>);
+
+  @override
   _i5.Future<_i2.Either<_i6.Failure, void>> signOut() =>
       (super.noSuchMethod(
             Invocation.method(#signOut, []),
@@ -189,7 +214,7 @@ class MockUser extends _i1.Mock implements _i3.User {
   String get uid =>
       (super.noSuchMethod(
             Invocation.getter(#uid),
-            returnValue: _i8.dummyValue<String>(this, Invocation.getter(#uid)),
+            returnValue: _i9.dummyValue<String>(this, Invocation.getter(#uid)),
           )
           as String);
 
@@ -459,97 +484,97 @@ class MockUser extends _i1.Mock implements _i3.User {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockPengantaranRepository extends _i1.Mock
-    implements _i9.PengantaranRepository {
+    implements _i10.PengantaranRepository {
   MockPengantaranRepository() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i5.Future<_i2.Either<_i6.Failure, List<_i10.DataWilayahEntity>>>
+  _i5.Future<_i2.Either<_i6.Failure, List<_i11.DataWilayahEntity>>>
   getProvinsi() =>
       (super.noSuchMethod(
             Invocation.method(#getProvinsi, []),
             returnValue:
                 _i5.Future<
-                  _i2.Either<_i6.Failure, List<_i10.DataWilayahEntity>>
+                  _i2.Either<_i6.Failure, List<_i11.DataWilayahEntity>>
                 >.value(
-                  _FakeEither_0<_i6.Failure, List<_i10.DataWilayahEntity>>(
+                  _FakeEither_0<_i6.Failure, List<_i11.DataWilayahEntity>>(
                     this,
                     Invocation.method(#getProvinsi, []),
                   ),
                 ),
           )
-          as _i5.Future<_i2.Either<_i6.Failure, List<_i10.DataWilayahEntity>>>);
+          as _i5.Future<_i2.Either<_i6.Failure, List<_i11.DataWilayahEntity>>>);
 
   @override
-  _i5.Future<_i2.Either<_i6.Failure, List<_i10.DataWilayahEntity>>> getKota(
+  _i5.Future<_i2.Either<_i6.Failure, List<_i11.DataWilayahEntity>>> getKota(
     String? provinsiId,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#getKota, [provinsiId]),
             returnValue:
                 _i5.Future<
-                  _i2.Either<_i6.Failure, List<_i10.DataWilayahEntity>>
+                  _i2.Either<_i6.Failure, List<_i11.DataWilayahEntity>>
                 >.value(
-                  _FakeEither_0<_i6.Failure, List<_i10.DataWilayahEntity>>(
+                  _FakeEither_0<_i6.Failure, List<_i11.DataWilayahEntity>>(
                     this,
                     Invocation.method(#getKota, [provinsiId]),
                   ),
                 ),
           )
-          as _i5.Future<_i2.Either<_i6.Failure, List<_i10.DataWilayahEntity>>>);
+          as _i5.Future<_i2.Either<_i6.Failure, List<_i11.DataWilayahEntity>>>);
 
   @override
-  _i5.Future<_i2.Either<_i6.Failure, List<_i10.DataWilayahEntity>>> getDistrik(
+  _i5.Future<_i2.Either<_i6.Failure, List<_i11.DataWilayahEntity>>> getDistrik(
     String? kotaId,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#getDistrik, [kotaId]),
             returnValue:
                 _i5.Future<
-                  _i2.Either<_i6.Failure, List<_i10.DataWilayahEntity>>
+                  _i2.Either<_i6.Failure, List<_i11.DataWilayahEntity>>
                 >.value(
-                  _FakeEither_0<_i6.Failure, List<_i10.DataWilayahEntity>>(
+                  _FakeEither_0<_i6.Failure, List<_i11.DataWilayahEntity>>(
                     this,
                     Invocation.method(#getDistrik, [kotaId]),
                   ),
                 ),
           )
-          as _i5.Future<_i2.Either<_i6.Failure, List<_i10.DataWilayahEntity>>>);
+          as _i5.Future<_i2.Either<_i6.Failure, List<_i11.DataWilayahEntity>>>);
 
   @override
-  _i5.Future<_i2.Either<_i6.Failure, List<_i11.DataCekEntity>>> getCekHarga(
-    _i11.DataCekRequestEntity? data,
+  _i5.Future<_i2.Either<_i6.Failure, List<_i12.DataCekEntity>>> getCekHarga(
+    _i12.DataCekRequestEntity? data,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#getCekHarga, [data]),
             returnValue:
                 _i5.Future<
-                  _i2.Either<_i6.Failure, List<_i11.DataCekEntity>>
+                  _i2.Either<_i6.Failure, List<_i12.DataCekEntity>>
                 >.value(
-                  _FakeEither_0<_i6.Failure, List<_i11.DataCekEntity>>(
+                  _FakeEither_0<_i6.Failure, List<_i12.DataCekEntity>>(
                     this,
                     Invocation.method(#getCekHarga, [data]),
                   ),
                 ),
           )
-          as _i5.Future<_i2.Either<_i6.Failure, List<_i11.DataCekEntity>>>);
+          as _i5.Future<_i2.Either<_i6.Failure, List<_i12.DataCekEntity>>>);
 
   @override
-  _i5.Future<_i2.Either<_i6.Failure, List<_i12.DataTrackEntity>>> getTrack(
-    _i12.DataTrackRequestEntity? data,
+  _i5.Future<_i2.Either<_i6.Failure, List<_i13.DataTrackEntity>>> getTrack(
+    _i13.DataTrackRequestEntity? data,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#getTrack, [data]),
             returnValue:
                 _i5.Future<
-                  _i2.Either<_i6.Failure, List<_i12.DataTrackEntity>>
+                  _i2.Either<_i6.Failure, List<_i13.DataTrackEntity>>
                 >.value(
-                  _FakeEither_0<_i6.Failure, List<_i12.DataTrackEntity>>(
+                  _FakeEither_0<_i6.Failure, List<_i13.DataTrackEntity>>(
                     this,
                     Invocation.method(#getTrack, [data]),
                   ),
                 ),
           )
-          as _i5.Future<_i2.Either<_i6.Failure, List<_i12.DataTrackEntity>>>);
+          as _i5.Future<_i2.Either<_i6.Failure, List<_i13.DataTrackEntity>>>);
 }
