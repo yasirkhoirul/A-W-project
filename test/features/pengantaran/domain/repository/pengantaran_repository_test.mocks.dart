@@ -3,9 +3,13 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i6;
+import 'dart:async' as _i8;
 
 import 'package:a_and_w/features/pengantaran/data/datasource/pengantaran_remote_datasource.dart'
+    as _i7;
+import 'package:a_and_w/features/pengantaran/data/model/cost_request_model.dart'
+    as _i9;
+import 'package:a_and_w/features/pengantaran/data/model/cost_response_model.dart'
     as _i5;
 import 'package:a_and_w/features/pengantaran/data/model/distrik_response.dart'
     as _i4;
@@ -13,6 +17,10 @@ import 'package:a_and_w/features/pengantaran/data/model/kota_response.dart'
     as _i3;
 import 'package:a_and_w/features/pengantaran/data/model/provinsi_response.dart'
     as _i2;
+import 'package:a_and_w/features/pengantaran/data/model/track_request_model.dart'
+    as _i10;
+import 'package:a_and_w/features/pengantaran/data/model/track_response_model.dart'
+    as _i6;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint
@@ -47,51 +55,81 @@ class _FakeDistrikResponse_2 extends _i1.SmartFake
     : super(parent, parentInvocation);
 }
 
+class _FakeCostResponse_3 extends _i1.SmartFake implements _i5.CostResponse {
+  _FakeCostResponse_3(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeTrackResponse_4 extends _i1.SmartFake implements _i6.TrackResponse {
+  _FakeTrackResponse_4(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
 /// A class which mocks [PengantaranRemoteDatasource].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockPengantaranRemoteDatasource extends _i1.Mock
-    implements _i5.PengantaranRemoteDatasource {
+    implements _i7.PengantaranRemoteDatasource {
   MockPengantaranRemoteDatasource() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i6.Future<_i2.ProvinsiResponse> getProvinsi() =>
+  _i8.Future<_i2.ProvinsiResponse> getProvinsi() =>
       (super.noSuchMethod(
             Invocation.method(#getProvinsi, []),
-            returnValue: _i6.Future<_i2.ProvinsiResponse>.value(
+            returnValue: _i8.Future<_i2.ProvinsiResponse>.value(
               _FakeProvinsiResponse_0(
                 this,
                 Invocation.method(#getProvinsi, []),
               ),
             ),
           )
-          as _i6.Future<_i2.ProvinsiResponse>);
+          as _i8.Future<_i2.ProvinsiResponse>);
 
   @override
-  _i6.Future<_i3.KotaResponse> getKota(String? provinsiId) =>
+  _i8.Future<_i3.KotaResponse> getKota(String? provinsiId) =>
       (super.noSuchMethod(
             Invocation.method(#getKota, [provinsiId]),
-            returnValue: _i6.Future<_i3.KotaResponse>.value(
+            returnValue: _i8.Future<_i3.KotaResponse>.value(
               _FakeKotaResponse_1(
                 this,
                 Invocation.method(#getKota, [provinsiId]),
               ),
             ),
           )
-          as _i6.Future<_i3.KotaResponse>);
+          as _i8.Future<_i3.KotaResponse>);
 
   @override
-  _i6.Future<_i4.DistrikResponse> getDistrik(String? kotaId) =>
+  _i8.Future<_i4.DistrikResponse> getDistrik(String? kotaId) =>
       (super.noSuchMethod(
             Invocation.method(#getDistrik, [kotaId]),
-            returnValue: _i6.Future<_i4.DistrikResponse>.value(
+            returnValue: _i8.Future<_i4.DistrikResponse>.value(
               _FakeDistrikResponse_2(
                 this,
                 Invocation.method(#getDistrik, [kotaId]),
               ),
             ),
           )
-          as _i6.Future<_i4.DistrikResponse>);
+          as _i8.Future<_i4.DistrikResponse>);
+
+  @override
+  _i8.Future<_i5.CostResponse> getCost(_i9.CostRequestModel? data) =>
+      (super.noSuchMethod(
+            Invocation.method(#getCost, [data]),
+            returnValue: _i8.Future<_i5.CostResponse>.value(
+              _FakeCostResponse_3(this, Invocation.method(#getCost, [data])),
+            ),
+          )
+          as _i8.Future<_i5.CostResponse>);
+
+  @override
+  _i8.Future<_i6.TrackResponse> getTrack(_i10.TrackRequestModel? data) =>
+      (super.noSuchMethod(
+            Invocation.method(#getTrack, [data]),
+            returnValue: _i8.Future<_i6.TrackResponse>.value(
+              _FakeTrackResponse_4(this, Invocation.method(#getTrack, [data])),
+            ),
+          )
+          as _i8.Future<_i6.TrackResponse>);
 }

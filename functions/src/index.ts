@@ -17,3 +17,9 @@ setGlobalOptions({maxInstances: 10});
 // Auth Triggers
 // ============================================
 export {onUserCreate} from "./triggers/auth.trigger.js";
+
+// ============================================
+// Product Triggers
+// ============================================
+export {createProduct, deleteProduct} from "./triggers/product.trigger.js";
+

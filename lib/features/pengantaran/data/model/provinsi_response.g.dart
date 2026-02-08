@@ -7,7 +7,10 @@ part of 'provinsi_response.dart';
 // **************************************************************************
 
 ProvinsiModel _$ProvinsiModelFromJson(Map<String, dynamic> json) =>
-    ProvinsiModel(id: _idToString(json['id']), name: json['name'] as String?);
+    ProvinsiModel(
+      id: (json['id'] as num?)?.toInt(),
+      name: json['name'] as String?,
+    );
 
 Map<String, dynamic> _$ProvinsiModelToJson(ProvinsiModel instance) =>
     <String, dynamic>{'id': instance.id, 'name': instance.name};

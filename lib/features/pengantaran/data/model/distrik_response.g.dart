@@ -6,8 +6,10 @@ part of 'distrik_response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-DistrikModel _$DistrikModelFromJson(Map<String, dynamic> json) =>
-    DistrikModel(id: _idToString(json['id']), name: json['name'] as String?);
+DistrikModel _$DistrikModelFromJson(Map<String, dynamic> json) => DistrikModel(
+  id: (json['id'] as num?)?.toInt(),
+  name: json['name'] as String?,
+);
 
 Map<String, dynamic> _$DistrikModelToJson(DistrikModel instance) =>
     <String, dynamic>{'id': instance.id, 'name': instance.name};

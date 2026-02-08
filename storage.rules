@@ -1,0 +1,16 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // ============================================
+    // Product Images
+    // ============================================
+    match /products/{productId}/{imageId} {
+      // READ: ✅ Semua bisa baca gambar produk
+      allow read: if true;
+      
+      // WRITE: ❌ Tidak boleh dari client (hanya via Cloud Functions)
+      allow write: if false;
+    }
+  }
+}

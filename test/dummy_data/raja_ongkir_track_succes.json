@@ -1,0 +1,112 @@
+{
+    "meta": {
+        "message": "Success Get Waybill",
+        "code": 200,
+        "status": "success"
+    },
+    "data": {
+        "delivered": true,
+        "summary": {
+            "courier_code": "jne",
+            "courier_name": "Jalur Nugraha Ekakurir (JNE)",
+            "waybill_number": "CM94942485503",
+            "service_code": "REG",
+            "waybill_date": "04-08-2025 20:28:14",
+            "shipper_name": "Evocative",
+            "receiver_name": "TEMPAT PAKET",
+            "origin": "KAB. BOGOR",
+            "destination": "UMBULHARJO,YOGYAKART",
+            "status": "DELIVERED"
+        },
+        "details": {
+            "waybill_number": "CM94942485503",
+            "waybill_date": "2025-08-04",
+            "waybill_time": "20:28",
+            "weight": "0.2 Kg",
+            "origin": "KAB. BOGOR",
+            "destination": "UMBULHARJO,YOGYAKART",
+            "shipper_name": "Evocative",
+            "shipper_address1": "",
+            "shipper_address2": "",
+            "shipper_address3": "",
+            "shipper_city": "KAB. BOGOR",
+            "receiver_name": "TEMPAT PAKET",
+            "receiver_address1": "",
+            "receiver_address2": "",
+            "receiver_address3": "",
+            "receiver_city": "UMBULHARJO,YOGYAKART"
+        },
+        "delivery_status": {
+            "status": "DELIVERED",
+            "pod_receiver": "TEMPAT PAKET",
+            "pod_date": "2025-08-06",
+            "pod_time": "16:14"
+        },
+        "manifest": [
+            {
+                "manifest_code": "",
+                "manifest_description": "DELIVERED TO [TEMPAT PAKET | 06-08-2025 16:14 | YOGYAKARTA ]",
+                "manifest_date": "06-08-2025 16:14:41",
+                "manifest_time": "",
+                "city_name": "",
+                "title": ""
+            },
+            {
+                "manifest_code": "",
+                "manifest_description": "WITH DELIVERY COURIER [YOGYAKARTA,KP.  GAMBIRAN] [YOGYAKARTA,KP.  GAMBIRAN]",
+                "manifest_date": "06-08-2025 07:23:38",
+                "manifest_time": "",
+                "city_name": "",
+                "title": ""
+            },
+            {
+                "manifest_code": "",
+                "manifest_description": "RECEIVED AT WAREHOUSE [YOGYAKARTA,KP.  GAMBIRAN] [YOGYAKARTA,KP.  GAMBIRAN]",
+                "manifest_date": "06-08-2025 00:02:00",
+                "manifest_time": "",
+                "city_name": "",
+                "title": ""
+            },
+            {
+                "manifest_code": "",
+                "manifest_description": "PROCESSED AT TRANSIT [SEMARANG, MADUKORO] [SEMARANG, MADUKORO]",
+                "manifest_date": "05-08-2025 13:42:57",
+                "manifest_time": "",
+                "city_name": "",
+                "title": ""
+            },
+            {
+                "manifest_code": "",
+                "manifest_description": "PROCESSED AT SORTING CENTER [JL.KARADENAN NO 100] [JL.KARADENAN NO 100]",
+                "manifest_date": "04-08-2025 23:56:00",
+                "manifest_time": "",
+                "city_name": "",
+                "title": ""
+            },
+            {
+                "manifest_code": "",
+                "manifest_description": "RECEIVED AT SORTING CENTER [BOGOR] []",
+                "manifest_date": "04-08-2025 23:19:50",
+                "manifest_time": "",
+                "city_name": "",
+                "title": ""
+            },
+            {
+                "manifest_code": "",
+                "manifest_description": "SHIPMENT PICKED UP BY JNE COURIER [BOGOR] []",
+                "manifest_date": "04-08-2025 22:13:53",
+                "manifest_time": "",
+                "city_name": "",
+                "title": ""
+            },
+            {
+                "manifest_code": "",
+                "manifest_description": "SHIPMENT RECEIVED AT [BOGOR] [BOGOR, AGEN CITAYAM PABUARAN]",
+                "manifest_date": "04-08-2025 20:28:14",
+                "manifest_time": "",
+                "city_name": "",
+                "title": ""
+            }
+        ]
+    }
+}

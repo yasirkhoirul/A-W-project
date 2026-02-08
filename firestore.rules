@@ -43,5 +43,22 @@ service cloud.firestore {
       // DELETE: ✅ Hanya admin yang bisa hapus
       allow delete: if isAdmin();
     }
+    
+    // ============================================
+    // Products Collection
+    // ============================================
+    match /products/{productId} {
+      // CREATE: ❌ Tidak boleh dari client (hanya via Cloud Functions)
+      allow create: if false;
+      
+      // READ: ✅ Semua user bisa baca produk
+      allow read: if true;
+      
+      // UPDATE: ❌ Tidak ada update
+      allow update: if false;
+      
+      // DELETE: ❌ Tidak boleh dari client (hanya via Cloud Functions)
+      allow delete: if false;
+    }
   }
 }

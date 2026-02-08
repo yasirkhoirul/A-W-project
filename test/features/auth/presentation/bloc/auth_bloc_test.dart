@@ -47,11 +47,13 @@ void main() {
     mockCheckAuthStatusUseCase = MockCheckAuthStatusUseCase();
     mockUser = MockUser();
 
-    when(mockCheckAuthStatusUseCase.call())
-        .thenAnswer((_) => Stream.value(false));
-    
-    when(mockSignOutUseCase.call())
-        .thenAnswer((_) async => const Right<failure.Failure, void>(null));
+    when(
+      mockCheckAuthStatusUseCase.call(),
+    ).thenAnswer((_) => Stream.value(false));
+
+    when(
+      mockSignOutUseCase.call(),
+    ).thenAnswer((_) async => const Right<failure.Failure, void>(null));
 
     authBloc = AuthBloc(
       signInWithEmailUseCase: mockSignInWithEmailUseCase,
@@ -75,10 +77,9 @@ void main() {
       blocTest<AuthBloc, AuthState>(
         'emits [AuthLoading, AuthSuccess] when login with email is successful',
         setUp: () {
-          when(mockSignInWithEmailUseCase.call(
-            'test@example.com',
-            'password123',
-          )).thenAnswer((_) async => Right<failure.Failure, User>(mockUser));
+          when(
+            mockSignInWithEmailUseCase.call('test@example.com', 'password123'),
+          ).thenAnswer((_) async => Right<failure.Failure, User>(mockUser));
         },
         build: () => authBloc,
         act: (bloc) => bloc.add(
@@ -87,26 +88,24 @@ void main() {
             password: 'password123',
           ),
         ),
-        expect: () => [
-          const AuthLoading(),
-          const AuthSuccess(),
-        ],
+        expect: () => [const AuthLoading(), const AuthSuccess()],
         verify: (_) {
-          verify(mockSignInWithEmailUseCase.call(
-            'test@example.com',
-            'password123',
-          )).called(1);
+          verify(
+            mockSignInWithEmailUseCase.call('test@example.com', 'password123'),
+          ).called(1);
         },
       );
 
       blocTest<AuthBloc, AuthState>(
         'emits [AuthLoading, AuthFailure] when login with email is unsuccessful',
         setUp: () {
-          when(mockSignInWithEmailUseCase.call(
-            'test@example.com',
-            'password123',
-          )).thenAnswer((_) async =>
-              const Left<failure.Failure, User>(failure.AuthFailure('Invalid credentials')));
+          when(
+            mockSignInWithEmailUseCase.call('test@example.com', 'password123'),
+          ).thenAnswer(
+            (_) async => const Left<failure.Failure, User>(
+              failure.AuthFailure('Invalid credentials'),
+            ),
+          );
         },
         build: () => authBloc,
         act: (bloc) => bloc.add(
@@ -120,10 +119,9 @@ void main() {
           const AuthFailure('Invalid credentials'),
         ],
         verify: (_) {
-          verify(mockSignInWithEmailUseCase.call(
-            'test@example.com',
-            'password123',
-          )).called(1);
+          verify(
+            mockSignInWithEmailUseCase.call('test@example.com', 'password123'),
+          ).called(1);
         },
       );
     });
@@ -132,15 +130,13 @@ void main() {
       blocTest<AuthBloc, AuthState>(
         'emits [AuthLoading, AuthSuccess] when login with google is successful',
         setUp: () {
-          when(mockSignInWithGoogleUseCase.call())
-              .thenAnswer((_) async => Right<failure.Failure, User>(mockUser));
+          when(
+            mockSignInWithGoogleUseCase.call(),
+          ).thenAnswer((_) async => Right<failure.Failure, User>(mockUser));
         },
         build: () => authBloc,
         act: (bloc) => bloc.add(const OnLoginWithGoogleEvent()),
-        expect: () => [
-          const AuthLoading(),
-          const AuthSuccess(),
-        ],
+        expect: () => [const AuthLoading(), const AuthSuccess()],
         verify: (_) {
           verify(mockSignInWithGoogleUseCase.call()).called(1);
         },
@@ -149,8 +145,11 @@ void main() {
       blocTest<AuthBloc, AuthState>(
         'emits [AuthLoading, AuthFailure] when login with google is unsuccessful',
         setUp: () {
-          when(mockSignInWithGoogleUseCase.call()).thenAnswer((_) async =>
-              const Left<failure.Failure, User>(failure.AuthFailure('Google sign in failed')));
+          when(mockSignInWithGoogleUseCase.call()).thenAnswer(
+            (_) async => const Left<failure.Failure, User>(
+              failure.AuthFailure('Google sign in failed'),
+            ),
+          );
         },
         build: () => authBloc,
         act: (bloc) => bloc.add(const OnLoginWithGoogleEvent()),
@@ -168,15 +167,13 @@ void main() {
       blocTest<AuthBloc, AuthState>(
         'emits [AuthLoading, AuthSuccess] when sign up is successful',
         setUp: () {
-          when(mockSignUpUseCase.call(tSignUpData))
-              .thenAnswer((_) async => Right<failure.Failure, User>(mockUser));
+          when(
+            mockSignUpUseCase.call(tSignUpData),
+          ).thenAnswer((_) async => Right<failure.Failure, User>(mockUser));
         },
         build: () => authBloc,
         act: (bloc) => bloc.add(OnSignUpEvent(tSignUpData)),
-        expect: () => [
-          const AuthLoading(),
-          const AuthSuccess(),
-        ],
+        expect: () => [const AuthLoading(), const AuthSuccess()],
         verify: (_) {
           verify(mockSignUpUseCase.call(tSignUpData)).called(1);
         },
@@ -185,8 +182,11 @@ void main() {
       blocTest<AuthBloc, AuthState>(
         'emits [AuthLoading, AuthFailure] when sign up is unsuccessful',
         setUp: () {
-          when(mockSignUpUseCase.call(tSignUpData)).thenAnswer((_) async =>
-              const Left<failure.Failure, User>(failure.AuthFailure('Email already exists')));
+          when(mockSignUpUseCase.call(tSignUpData)).thenAnswer(
+            (_) async => const Left<failure.Failure, User>(
+              failure.AuthFailure('Email already exists'),
+            ),
+          );
         },
         build: () => authBloc,
         act: (bloc) => bloc.add(OnSignUpEvent(tSignUpData)),
@@ -205,9 +205,7 @@ void main() {
         'emits [AuthSuccess] when OnLoginInstantEvent is added',
         build: () => authBloc,
         act: (bloc) => bloc.add(const OnLoginInstantEvent()),
-        expect: () => [
-          const AuthSuccess(),
-        ],
+        expect: () => [const AuthSuccess()],
       );
     });
 
@@ -215,11 +213,11 @@ void main() {
       blocTest<AuthBloc, AuthState>(
         'emits [AuthInitial] when logout is successful',
         setUp: () {
-          when(mockSignOutUseCase.call())
-              .thenAnswer((_) async => const Right<failure.Failure, void>(null));
+          when(
+            mockSignOutUseCase.call(),
+          ).thenAnswer((_) async => const Right<failure.Failure, void>(null));
         },
         build: () {
-
           return AuthBloc(
             signInWithEmailUseCase: mockSignInWithEmailUseCase,
             signInWithGoogleUseCase: mockSignInWithGoogleUseCase,
@@ -229,9 +227,7 @@ void main() {
           );
         },
         act: (bloc) => bloc.add(const OnLogoutEvent()),
-        expect: () => [
-          const AuthInitial(),
-        ],
+        expect: () => [const AuthInitial()],
       );
     });
 
@@ -239,8 +235,9 @@ void main() {
       blocTest<AuthBloc, AuthState>(
         'emits [AuthSuccess] when checkAuthStatusUseCase returns true',
         setUp: () {
-          when(mockCheckAuthStatusUseCase.call())
-              .thenAnswer((_) => Stream.value(true));
+          when(
+            mockCheckAuthStatusUseCase.call(),
+          ).thenAnswer((_) => Stream.value(true));
         },
         build: () => AuthBloc(
           signInWithEmailUseCase: mockSignInWithEmailUseCase,
@@ -249,16 +246,15 @@ void main() {
           signOutUseCase: mockSignOutUseCase,
           checkAuthStatusUseCase: mockCheckAuthStatusUseCase,
         ),
-        expect: () => [
-          const AuthSuccess(),
-        ],
+        expect: () => [const AuthSuccess()],
       );
 
       blocTest<AuthBloc, AuthState>(
         'emits [AuthInitial] when checkAuthStatusUseCase returns false',
         setUp: () {
-          when(mockCheckAuthStatusUseCase.call())
-              .thenAnswer((_) => Stream.value(false));
+          when(
+            mockCheckAuthStatusUseCase.call(),
+          ).thenAnswer((_) => Stream.value(false));
         },
         build: () => AuthBloc(
           signInWithEmailUseCase: mockSignInWithEmailUseCase,
@@ -267,9 +263,7 @@ void main() {
           signOutUseCase: mockSignOutUseCase,
           checkAuthStatusUseCase: mockCheckAuthStatusUseCase,
         ),
-        expect: () => [
-          const AuthInitial(),
-        ],
+        expect: () => [const AuthInitial()],
       );
     });
   });

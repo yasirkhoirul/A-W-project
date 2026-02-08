@@ -1,19 +1,16 @@
+import 'package:a_and_w/features/pengantaran/domain/entities/data_wilayah_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'provinsi_response.g.dart';
 
 @JsonSerializable()
-class ProvinsiModel {
-  @JsonKey(fromJson: _idToString)
-  final String? id;
-  final String? name;
-  const ProvinsiModel({this.id, this.name});
+class ProvinsiModel extends DataWilayahEntity {
+  const ProvinsiModel({super.id, super.name});
 
-  factory ProvinsiModel.fromJson(Map<String, dynamic> json) => _$ProvinsiModelFromJson(json);
+  factory ProvinsiModel.fromJson(Map<String, dynamic> json) =>
+      _$ProvinsiModelFromJson(json);
   Map<String, dynamic> toJson() => _$ProvinsiModelToJson(this);
 }
-
-String? _idToString(dynamic value) => value?.toString();
 
 @JsonSerializable()
 class ProvinsiResponse {
@@ -22,7 +19,7 @@ class ProvinsiResponse {
 
   const ProvinsiResponse({this.meta, this.data});
 
-  factory ProvinsiResponse.fromJson(Map<String, dynamic> json) => 
+  factory ProvinsiResponse.fromJson(Map<String, dynamic> json) =>
       _$ProvinsiResponseFromJson(json);
   Map<String, dynamic> toJson() => _$ProvinsiResponseToJson(this);
 }

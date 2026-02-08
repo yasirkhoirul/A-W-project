@@ -7,7 +7,7 @@ part of 'kota_response.dart';
 // **************************************************************************
 
 KotaModel _$KotaModelFromJson(Map<String, dynamic> json) =>
-    KotaModel(id: _idToString(json['id']), name: json['name'] as String?);
+    KotaModel(id: (json['id'] as num?)?.toInt(), name: json['name'] as String?);
 
 Map<String, dynamic> _$KotaModelToJson(KotaModel instance) => <String, dynamic>{
   'id': instance.id,

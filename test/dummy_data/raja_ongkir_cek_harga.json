@@ -1,0 +1,81 @@
+{
+    "meta": {
+        "message": "Success Calculate Domestic Shipping cost",
+        "code": 200,
+        "status": "success"
+    },
+    "data": [
+        {
+            "name": "Jalur Nugraha Ekakurir (JNE)",
+            "code": "jne",
+            "service": "REG",
+            "description": "Layanan Reguler",
+            "cost": 44000,
+            "etd": "5 day"
+        },
+        {
+            "name": "Satria Antaran Prima",
+            "code": "sap",
+            "service": "UDRREG",
+            "description": "Reguler",
+            "cost": 45500,
+            "etd": "4-7 day"
+        },
+        {
+            "name": "J&T Express",
+            "code": "jnt",
+            "service": "EZ",
+            "description": "Reguler",
+            "cost": 46000,
+            "etd": ""
+        },
+        {
+            "name": "Satria Antaran Prima",
+            "code": "sap",
+            "service": "UDRONS",
+            "description": "Nextday",
+            "cost": 86500,
+            "etd": "1-2 day"
+        },
+        {
+            "name": "Jalur Nugraha Ekakurir (JNE)",
+            "code": "jne",
+            "service": "JTR",
+            "description": "JNE Trucking",
+            "cost": 165000,
+            "etd": "10 day"
+        },
+        {
+            "name": "Satria Antaran Prima",
+            "code": "sap",
+            "service": "DRGREG",
+            "description": "Cargo",
+            "cost": 210000,
+            "etd": "4-8 day"
+        },
+        {
+            "name": "Jalur Nugraha Ekakurir (JNE)",
+            "code": "jne",
+            "service": "JTR<130",
+            "description": "JNE Trucking",
+            "cost": 2000000,
+            "etd": "5 day"
+        },
+        {
+            "name": "Jalur Nugraha Ekakurir (JNE)",
+            "code": "jne",
+            "service": "JTR>200",
+            "description": "JNE Trucking",
+            "cost": 3800000,
+            "etd": "8 day"
+        },
+        {
+            "name": "Jalur Nugraha Ekakurir (JNE)",
+            "code": "jne",
+            "service": "JTR>130",
+            "description": "JNE Trucking",
+            "cost": 4150000,
+            "etd": "8 day"
+        }
+    ]
+}
