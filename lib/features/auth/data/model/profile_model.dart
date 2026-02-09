@@ -10,7 +10,7 @@ class ProfileModel {
   @JsonKey(name: 'displayName')
   final String nama;
   final String? phoneNumber;
-  final List<AddressModel>? address;
+  final AddressModel? address;
 
   const ProfileModel({
     required this.uid,
@@ -31,7 +31,7 @@ class ProfileModel {
     email: email,
     nama: nama,
     phoneNumber: phoneNumber,
-    address: address?.map((e) => e.toEntity()).toList(),
+    address: address?.toEntity(),
   );
 
   factory ProfileModel.fromEntity(Profile entity) => ProfileModel(
@@ -39,7 +39,7 @@ class ProfileModel {
     email: entity.email,
     nama: entity.nama,
     phoneNumber: entity.phoneNumber,
-    address: entity.address?.map((e) => AddressModel.fromEntity(e)).toList(),
+    address: entity.address == null ? null : AddressModel.fromEntity(entity.address!),
   );
 }
 

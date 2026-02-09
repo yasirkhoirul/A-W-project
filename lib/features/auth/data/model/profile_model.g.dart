@@ -11,9 +11,9 @@ ProfileModel _$ProfileModelFromJson(Map<String, dynamic> json) => ProfileModel(
   email: json['email'] as String,
   nama: json['displayName'] as String,
   phoneNumber: json['phoneNumber'] as String?,
-  address: (json['address'] as List<dynamic>?)
-      ?.map((e) => AddressModel.fromJson(e as Map<String, dynamic>))
-      .toList(),
+  address: json['address'] == null
+      ? null
+      : AddressModel.fromJson(json['address'] as Map<String, dynamic>),
 );
 
 Map<String, dynamic> _$ProfileModelToJson(ProfileModel instance) =>
@@ -22,7 +22,7 @@ Map<String, dynamic> _$ProfileModelToJson(ProfileModel instance) =>
       'email': instance.email,
       'displayName': instance.nama,
       'phoneNumber': instance.phoneNumber,
-      'address': instance.address?.map((e) => e.toJson()).toList(),
+      'address': instance.address?.toJson(),
     };
 
 AddressModel _$AddressModelFromJson(Map<String, dynamic> json) => AddressModel(

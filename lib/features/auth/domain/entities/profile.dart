@@ -3,7 +3,7 @@ class Profile {
   final String email;
   final String nama;
   final String? phoneNumber;
-  final List<Address>? address;
+  final Address? address;
   const Profile({
     required this.uid,
     required this.email,

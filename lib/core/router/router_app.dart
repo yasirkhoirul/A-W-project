@@ -4,8 +4,7 @@ import 'package:a_and_w/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:a_and_w/features/auth/presentation/page/login_page.dart';
 import 'package:a_and_w/features/auth/presentation/page/profile_page.dart';
 import 'package:a_and_w/features/auth/presentation/page/signup_page.dart';
-import 'package:a_and_w/core/main_scaffold/main_scaffold.dart';
-import 'package:a_and_w/features/barang/persentation/page/barang_page.dart';
+import 'package:a_and_w/features/home/presentation/pages/main_scaffold.dart';
 import 'package:go_router/go_router.dart';
 
 class RouterApp {

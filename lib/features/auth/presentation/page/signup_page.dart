@@ -1,5 +1,5 @@
 import 'package:a_and_w/core/utils/validators.dart';
-import 'package:a_and_w/core/widget/text_field.dart';
+import 'package:a_and_w/core/widgets/text_field.dart';
 import 'package:a_and_w/features/auth/domain/entities/user.dart';
 import 'package:a_and_w/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +52,8 @@ class _SignupPageState extends State<SignupPage> {
                     ),
                     MyTextField(
                       label: "Nama",
-                      validator: (value) => Validators.required(value, fieldName: "Nama"),
+                      validator: (value) =>
+                          Validators.required(value, fieldName: "Nama"),
                       controller: namaController,
                     ),
                     MyTextField(
@@ -63,7 +64,8 @@ class _SignupPageState extends State<SignupPage> {
                     ),
                     MyTextField(
                       label: "Provinsi",
-                      validator: (value) => Validators.required(value, fieldName: "Provinsi"),
+                      validator: (value) =>
+                          Validators.required(value, fieldName: "Provinsi"),
                       controller: provinsiController,
                     ),
                     MyTextField.hide(
@@ -73,7 +75,10 @@ class _SignupPageState extends State<SignupPage> {
                     ),
                     MyTextField.hide(
                       label: "Confirm Password",
-                      validator: (value) => Validators.confirmPassword(value, passwordController.text),
+                      validator: (value) => Validators.confirmPassword(
+                        value,
+                        passwordController.text,
+                      ),
                       controller: confirmPasswordController,
                     ),
                   ],
@@ -81,22 +86,36 @@ class _SignupPageState extends State<SignupPage> {
               ),
             ),
             SingleChildScrollView(
-              child: Column(
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      if (SignupPage.formKey.currentState!.validate()) {
-                        final UserEntities user = UserEntities(
-                          emailController.text,
-                          passwordController.text,
-                          namaController.text,
-                        );
-                        context.read<AuthBloc>().add(OnSignUpEvent(user));
-                      }
-                    },
-                    child: const Text("Sign Up"),
-                  ),
-                ],
+              child: BlocConsumer<AuthBloc, AuthState>(
+                listener: (context, state) {
+                  if (state is AuthFailure) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(state.message)),
+                    );
+                  }
+                },
+                builder: (context, state) {
+                  if (state is AuthLoading) {
+                    return const CircularProgressIndicator();
+                  }
+                  return Column(
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          if (SignupPage.formKey.currentState!.validate()) {
+                            final UserEntities user = UserEntities(
+                              emailController.text,
+                              passwordController.text,
+                              namaController.text,
+                            );
+                            context.read<AuthBloc>().add(OnSignUpEvent(user));
+                          }
+                        },
+                        child: const Text("Sign Up"),
+                      ),
+                    ],
+                  );
+                },
               ),
             ),
           ],

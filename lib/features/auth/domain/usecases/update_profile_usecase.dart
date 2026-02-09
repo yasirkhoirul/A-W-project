@@ -12,6 +12,18 @@ class UpdateProfileUsecase {
     if (profile.uid.isEmpty) {
       return Future.value(Left(UnknownFailure("Uid Kosong")));
     }
+    if (profile.nama.isEmpty) {
+      return Future.value(Left(UnknownFailure("Nama Kosong")));
+    }
+    if (profile.email.isEmpty) {
+      return Future.value(Left(UnknownFailure("Email Kosong")));
+    }
+    if (profile.address == null) {
+      return Future.value(Left(UnknownFailure("Alamat Kosong")));
+    }
+    if (profile.phoneNumber == null) {
+      return Future.value(Left(UnknownFailure("Nomor Telepon Kosong")));
+    }
     return repository.updateProfile(profile);
   }
 }

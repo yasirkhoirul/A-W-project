@@ -19,7 +19,7 @@ import 'package:a_and_w/features/pengantaran/domain/usecase/get_list_distrik.dar
 import 'package:a_and_w/features/pengantaran/domain/usecase/get_list_kota.dart';
 import 'package:a_and_w/features/pengantaran/domain/usecase/get_list_provinsi.dart';
 import 'package:a_and_w/features/pengantaran/presentation/bloc/pengantara_check_track_bloc.dart';
-import 'package:a_and_w/features/pengantaran/presentation/bloc/pengantaran_list_bloc.dart';
+import 'package:a_and_w/features/pengantaran/presentation/cubit/alamat_dropdown_cubit.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -67,6 +67,7 @@ Future<void> getitInit() async {
 
   //bloc pengantaran
   locator.registerCachedFactory<PengantaraCheckTrackBloc>(() => PengantaraCheckTrackBloc(locator(),  locator()));
-  locator.registerCachedFactory<PengantaranListBloc>(() => PengantaranListBloc( locator(), locator(),locator()));
+  //cubit alamat dropdown - factory karena bisa dipakai di banyak page
+  locator.registerFactory<AlamatDropdownCubit>(() => AlamatDropdownCubit(locator(), locator(), locator()));
 
 }

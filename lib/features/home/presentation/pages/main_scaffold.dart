@@ -1,6 +1,7 @@
 import 'package:a_and_w/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:a_and_w/features/auth/presentation/bloc/profile_bloc.dart';
 import 'package:a_and_w/features/auth/presentation/page/profile_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -15,8 +16,25 @@ class MainScaffold extends StatefulWidget {
 }
 
 class _MainScaffoldState extends State<MainScaffold> {
+  void cekToken() async {
+  User? user = FirebaseAuth.instance.currentUser;
+  
+  if (user != null) {
+    // True berarti memaksa refresh token baru biar masa berlakunya panjang
+    String? token = await user.getIdToken(true);
+    
+    print("================ COPY TOKEN DI BAWAH INI ================");
+    print(token);
+    print("=========================================================");
+    
+    print("UID SAYA: ${user.uid}");
+  } else {
+    print("User belum login");
+  }
+}
   @override
   void initState() {
+    cekToken();
     context.read<ProfileBloc>().add(OnGetProfile());
     super.initState();
   }

@@ -11,6 +11,7 @@ import 'package:a_and_w/features/pengantaran/data/model/kota_response.dart';
 import 'package:a_and_w/features/pengantaran/data/model/provinsi_response.dart';
 import 'package:a_and_w/core/constant/baseurl.dart';
 import 'package:http/http.dart' as http;
+import 'package:logger/logger.dart';
 
 abstract class PengantaranRemoteDatasource {
   Future<ProvinsiResponse> getProvinsi();
@@ -23,15 +24,15 @@ abstract class PengantaranRemoteDatasource {
 class PengantaranRemoteDatasourceImpl implements PengantaranRemoteDatasource {
   static const String apiKey = String.fromEnvironment(
     'RAJAONGKIR_KEY',
-    defaultValue: 'KEY_TIDAK_DITEMUKAN',
+    defaultValue: '',
   );
   final http.Client client;
-  PengantaranRemoteDatasourceImpl(this.client) {
-    _checkApiKeyPresence();
-  }
+  
+  PengantaranRemoteDatasourceImpl(this.client);
 
-  void _checkApiKeyPresence() {
+  void _validateApiKey() {
     if (apiKey.isEmpty) {
+      Logger().e('RajaOngkir API Key tidak ditemukan!');
       throw const HttpApiException(
         'API Key tidak ditemukan. Set dengan: flutter run --dart-define=RAJAONGKIR_KEY=your_key',
       );
@@ -42,10 +43,12 @@ class PengantaranRemoteDatasourceImpl implements PengantaranRemoteDatasource {
 
   @override
   Future<ProvinsiResponse> getProvinsi() async {
+    _validateApiKey();
     try {
+      Logger().d('GET header: ${_headers()}');
       final uri = Uri.parse('${Baseurl.baseurlRajaOngkir}destination/province');
       final response = await client.get(uri, headers: _headers());
-
+      Logger().d('GET $uri - Status: ${response.statusCode}');
       if (response.statusCode != 200) {
         throw HttpApiException.fromStatusCode(response.statusCode);
       }
@@ -63,6 +66,7 @@ class PengantaranRemoteDatasourceImpl implements PengantaranRemoteDatasource {
 
   @override
   Future<KotaResponse> getKota(String provinsiId) async {
+    _validateApiKey();
     try {
       final uri = Uri.parse(
         '${Baseurl.baseurlRajaOngkir}destination/city/$provinsiId',
@@ -86,6 +90,7 @@ class PengantaranRemoteDatasourceImpl implements PengantaranRemoteDatasource {
 
   @override
   Future<DistrikResponse> getDistrik(String kotaId) async {
+    _validateApiKey();
     try {
       final uri = Uri.parse(
         '${Baseurl.baseurlRajaOngkir}destination/district/$kotaId',
@@ -109,6 +114,7 @@ class PengantaranRemoteDatasourceImpl implements PengantaranRemoteDatasource {
 
   @override
   Future<CostResponse> getCost(CostRequestModel data) async {
+    _validateApiKey();
     try {
       final uri = Uri.parse(
         '${Baseurl.baseurlRajaOngkir}calculate/domestic-cost',
@@ -136,6 +142,7 @@ class PengantaranRemoteDatasourceImpl implements PengantaranRemoteDatasource {
 
   @override
   Future<TrackResponse> getTrack(TrackRequestModel data) async {
+    _validateApiKey();
     try {
       final uri = Uri.parse(
         '${Baseurl.baseurlRajaOngkir}track/waybill?waybill=${data.waybill}&courier=${data.courier}',

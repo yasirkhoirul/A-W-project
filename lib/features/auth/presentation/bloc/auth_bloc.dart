@@ -19,7 +19,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final SignUpUseCase signUpUseCase;
   final SignOutUseCase signOutUseCase;
   final CheckAuthStatusUseCase checkAuthStatusUseCase;
-  
+
   StreamSubscription? _authStatusSubscription;
 
   AuthBloc({
@@ -29,7 +29,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required this.signOutUseCase,
     required this.checkAuthStatusUseCase,
   }) : super(const AuthInitial()) {
-    _authStatusSubscription = checkAuthStatusUseCase().listen((isAuthenticated) {
+    _authStatusSubscription = checkAuthStatusUseCase().listen((
+      isAuthenticated,
+    ) {
       if (isAuthenticated) {
         add(const OnLoginInstantEvent());
       } else {
@@ -39,10 +41,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     on<OnLoginWithEmailEvent>((event, emit) async {
       emit(const AuthLoading());
-      final result = await signInWithEmailUseCase(
-        event.email,
-        event.password,
-      );
+      final result = await signInWithEmailUseCase(event.email, event.password);
       result.fold(
         (failure) => emit(AuthFailure(failure.message)),
         (user) => add(const OnLoginInstantEvent()),
@@ -72,7 +71,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
 
     on<OnLogoutEvent>((event, emit) async {
-      await signOutUseCase();
+      if (state is! AuthInitial) {
+        await signOutUseCase();
+      }
       emit(const AuthInitial());
     });
   }

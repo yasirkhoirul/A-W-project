@@ -1,0 +1,24 @@
+﻿{
+  "address": {
+    "district": {
+      "id": 118,
+      "nama": "SIRIMAU"
+    },
+    "kota": {
+      "id": 11,
+      "nama": "AMBON"
+    },
+    "provinsi": {
+      "id": 2,
+      "nama": "MALUKU"
+    }
+  },
+  "createdAt": "2026-02-07T15:13:08.000Z",
+  "displayName": "User Baru12",
+  "email": "yasir@gmail.com",
+  "phoneNumber": "081232134546",
+  "photoURL": "",
+  "role": "user",
+  "uid": "MI1L3LePEqZyfuoQoqEGyoGR3Aw2",
+  "updatedAt": "2026-02-07T15:13:08.000Z"
+}

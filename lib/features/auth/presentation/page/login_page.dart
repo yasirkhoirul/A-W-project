@@ -1,6 +1,6 @@
 import 'package:a_and_w/core/router/router.dart';
 import 'package:a_and_w/core/utils/validators.dart';
-import 'package:a_and_w/core/widget/text_field.dart';
+import 'package:a_and_w/core/widgets/text_field.dart';
 import 'package:a_and_w/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
