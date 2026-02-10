@@ -9,3 +9,22 @@ enum ECourier {
 
   const ECourier(this.text);
 }
+
+enum KategoriBarang {
+  makanan("makanan"),
+  pakaian("pakaian"),
+  sepatu("sepatu"),
+  elektronik("elektronik");
+
+  final String value;
+
+  const KategoriBarang(this.value);
+
+  static KategoriBarang? fromString(String? value) {
+    if (value == null) return null;
+    return KategoriBarang.values.firstWhere(
+      (e) => e.value == value,
+      orElse: () => KategoriBarang.makanan,
+    );
+  }
+}

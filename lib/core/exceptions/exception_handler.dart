@@ -1,4 +1,5 @@
 import 'package:a_and_w/core/exceptions/http_api_exception.dart';
+import 'package:a_and_w/core/exceptions/local_database_exception.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:a_and_w/core/exceptions/firebase_exception.dart';
 import 'package:a_and_w/core/exceptions/failure.dart';
@@ -45,6 +46,11 @@ class ExceptionHandler {
     }
     if (error is NetworkException) {
       return const NetworkFailure();
+    }
+
+    // Local database errors (Drift/SQLite)
+    if (error is LocalDatabaseException) {
+      return DatabaseFailure(error.message);
     }
 
     // Network errors

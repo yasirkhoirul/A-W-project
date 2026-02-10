@@ -4,6 +4,7 @@ import 'package:a_and_w/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:a_and_w/features/auth/presentation/page/login_page.dart';
 import 'package:a_and_w/features/auth/presentation/page/profile_page.dart';
 import 'package:a_and_w/features/auth/presentation/page/signup_page.dart';
+import 'package:a_and_w/features/barang/persentation/page/barang_page.dart';
 import 'package:a_and_w/features/home/presentation/pages/main_scaffold.dart';
 import 'package:go_router/go_router.dart';
 
@@ -20,12 +21,21 @@ class RouterApp {
         builder: (context, state) => SignupPage(),
       ),
       StatefulShellRoute.indexedStack(
-        builder: (context, state, navigationShell) => MainScaffold(navigationShell: navigationShell,),
+        builder: (context, state, navigationShell) =>
+            MainScaffold(navigationShell: navigationShell),
         branches: [
           StatefulShellBranch(
             routes: [
               GoRoute(
                 path: AppRouter.home,
+                builder: (context, state) => BarangPage(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRouter.profile,
                 builder: (context, state) => ProfilePage(),
               ),
             ],

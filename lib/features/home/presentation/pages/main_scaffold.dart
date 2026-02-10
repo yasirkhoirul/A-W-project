@@ -16,25 +16,8 @@ class MainScaffold extends StatefulWidget {
 }
 
 class _MainScaffoldState extends State<MainScaffold> {
-  void cekToken() async {
-  User? user = FirebaseAuth.instance.currentUser;
-  
-  if (user != null) {
-    // True berarti memaksa refresh token baru biar masa berlakunya panjang
-    String? token = await user.getIdToken(true);
-    
-    print("================ COPY TOKEN DI BAWAH INI ================");
-    print(token);
-    print("=========================================================");
-    
-    print("UID SAYA: ${user.uid}");
-  } else {
-    print("User belum login");
-  }
-}
   @override
   void initState() {
-    cekToken();
     context.read<ProfileBloc>().add(OnGetProfile());
     super.initState();
   }
@@ -53,6 +36,16 @@ class _MainScaffoldState extends State<MainScaffold> {
           ),
         ],
       ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: widget.navigationShell.currentIndex,
+        onTap: (index) {
+          widget.navigationShell.goBranch(index);
+        },
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+        ],
+      ),
       body: BlocListener<ProfileBloc, ProfileState>(
         listener: (context, state) {
           if (state is ProfileLoaded) {
@@ -63,7 +56,7 @@ class _MainScaffoldState extends State<MainScaffold> {
                 context: context,
                 builder: (context) => AlertDialog(
                   title: const Text('Lengkapi Profil'),
-                  content: ContenProfile(profile: state.profile), 
+                  content: ContenProfile(profile: state.profile),
                 ),
               );
             }
