@@ -8,7 +8,7 @@
 3. Jalankan perintah untuk mengambil library:
    flutter pub get
 
-- API key raja ongkir saya = f5ZqP04ua3368d70134e8f3dBYgYNWWI
+
 ## Menjalankan Aplikasi
 ```bash
 flutter run --dart-define=RAJAONGKIR_KEY=your_key
