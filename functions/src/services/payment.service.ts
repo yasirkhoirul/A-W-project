@@ -18,8 +18,8 @@ export class PaymentService {
     constructor(private readonly paymentRepository: PaymentRepository) {
         const config = {
             isProduction: false,
-            serverKey: "Mid-server-rle16AUmuE5-P4_r4YnKKcaZ",
-            clientKey: "Mid-client-OLPbjTy5pEyOkaD7",
+            serverKey: "serverkey",
+            clientKey: "clientkey",
         };
 
         this.snap = new MidtransClient.Snap(config);
