@@ -1,13 +1,13 @@
-import 'package:a_and_w/core/dependency_injection.dart';
+import 'package:a_and_w/core/entities/profile.dart';
 import 'package:a_and_w/core/utils/validators.dart';
+import 'package:a_and_w/core/widgets/button.dart';
+import 'package:a_and_w/core/widgets/form_layout.dart';
+import 'package:a_and_w/core/widgets/snackbar.dart';
+import 'package:a_and_w/features/pengantaran/presentation/pages/alamat_row.dart';
 import 'package:a_and_w/core/widgets/error_retry.dart';
 import 'package:a_and_w/core/widgets/text_field.dart';
-import 'package:a_and_w/features/auth/domain/entities/profile.dart';
 import 'package:a_and_w/features/auth/presentation/bloc/profile_bloc.dart';
-import 'package:a_and_w/features/pengantaran/presentation/cubit/alamat_dropdown_cubit.dart';
-import 'package:a_and_w/features/pengantaran/presentation/pages/pick_alamat_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -29,21 +29,22 @@ class _ProfilePageState extends State<ProfilePage> {
     return BlocConsumer<ProfileBloc, ProfileState>(
       listener: (context, state) {
         if (state is ProfileError) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(const SnackBar(content: Text('Terjadi kesalahan')));
+          CustomSnackBar.showError(context, 'Terjadi kesalahan${state.message}');
         }
         if (state is ProfileLoaded) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(const SnackBar(content: Text('Profile berhasil diload')));
+          CustomSnackBar.showSuccess(context, 'Profile berhasil diload');
         }
       },
       builder: (context, state) {
         if (state is ProfileLoading) {
           return const Center(child: CircularProgressIndicator());
         } else if (state is ProfileLoaded) {
-          return ContenProfile(profile: state.profile);
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SingleChildScrollView(
+              child: ContentProfile(profile: state.profile),
+            ),
+          );
         } else if (state is ProfileError) {
           return ErrorRetry(
             message: "Gagal load data",
@@ -57,29 +58,21 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 }
 
-class ContenProfile extends StatefulWidget {
-  const ContenProfile({super.key, required this.profile});
+class ContentProfile extends StatefulWidget {
+  const ContentProfile({super.key, required this.profile});
 
   final Profile profile;
 
   @override
-  State<ContenProfile> createState() => _ContenProfileState();
+  State<ContentProfile> createState() => _ContentProfileState();
 }
 
-class _ContenProfileState extends State<ContenProfile> {
+class _ContentProfileState extends State<ContentProfile> {
   late final TextEditingController _namaController;
   late final TextEditingController _phoneController;
-  Address? _address;
   final _formKey = GlobalKey<FormState>();
+  Address? _address;
   bool isUpdating = false;
-
-  double _turns = 0.0;
-
-  void _rotateIcon() {
-    setState(() {
-      _turns += 0.5;
-    });
-  }
 
   @override
   void initState() {
@@ -92,7 +85,7 @@ class _ContenProfileState extends State<ContenProfile> {
   }
 
   @override
-  void didUpdateWidget(ContenProfile oldWidget) {
+  void didUpdateWidget(ContentProfile oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.profile != widget.profile) {
       _namaController.text = widget.profile.nama;
@@ -110,110 +103,77 @@ class _ContenProfileState extends State<ContenProfile> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Form(
-        key: _formKey,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            MyTextField(label: 'Nama', controller: _namaController),
-            const SizedBox(height: 16),
-            Text('Email: ${widget.profile.email}'),
-            const SizedBox(height: 16),
-            MyTextField(
-              label: 'Nomor Telepon',
-              controller: _phoneController,
-              validator: Validators.phone,
-            ),
-            const SizedBox(height: 16),
-            _address == null
-                ? const Text("Alamat belum ditambahkan")
-                : Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text("Alamat: "),
-                      Flexible(
-                        child: !isUpdating
-                            ? Text(
-                                "${_address!.district.nama}, ${_address!.kota.nama}, ${_address!.provinsi.nama}",
-                                overflow: TextOverflow.ellipsis,
-                              )
-                            : Text("Pilih Alamat"),
-                      ),
-                      AnimatedRotation(
-                        turns: _turns, // Nilai ini yang diubah-ubah
-                        duration: const Duration(
-                          milliseconds: 500,
-                        ), // Durasi animasi
-                        curve: Curves.easeInOut, // Efek gerakan agar halus
-                        child: IconButton(
-                          onPressed: () {
-                            setState(() {
-                              isUpdating = !isUpdating;
-                            });
-                            _rotateIcon();
-                          },
-                          icon: const Icon(Icons.arrow_drop_up_rounded),
-                        ),
-                      ),
-                    ],
-                  ),
-            AnimatedSize(
-              duration: const Duration(milliseconds: 300),
-              child: isUpdating
-                  ? BlocProvider(
-                      create: (context) => locator<AlamatDropdownCubit>(),
-                      child: PickAlamatPage(
-                        onAlamatSubmitted: (provinsi, kota, distrik) {
-                          final dataProv = DataAddress(
-                            id: provinsi.id!,
-                            nama: provinsi.name!,
-                          );
-                          final dataKota = DataAddress(
-                            id: kota.id!,
-                            nama: kota.name!,
-                          );
-                          final dataDistrik = DataAddress(
-                            id: distrik.id!,
-                            nama: distrik.name!,
-                          );
-                          setState(() {
-                            _address = Address(
-                              provinsi: dataProv,
-                              kota: dataKota,
-                              district: dataDistrik,
-                            );
-                             setState(() {
-                              isUpdating = !isUpdating;
-                            });
-                            _rotateIcon();
-                          });
-                        },
-                      ),
-                    )
-                  : Container(),
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                if (!_formKey.currentState!.validate()) {
-                  return;
-                }
-                final Profile updatedProfile = Profile(
-                  uid: widget.profile.uid,
-                  email: widget.profile.email,
-                  nama: _namaController.text,
-                  phoneNumber: _phoneController.text,
-                  address: _address,
-                );
+    return Card(
+      child: Center(
+        child: Form(
+          key: _formKey,
+          child: FormLayout(
+            children: [
+              Text(
+                "Selamat Datang Di Profile",
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
+              CircleAvatar(
+                radius: 100,
+                backgroundColor: Theme.of(context).primaryColor,
+                child: Icon(
+                  Icons.person,
+                  size: 100,
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text('Email: ${widget.profile.email}'),
+              ),
+              MyTextField(label: 'Nama', controller: _namaController),
+              MyTextField(
+                label: 'Nomor Telepon',
+                controller: _phoneController,
+                validator: Validators.phone,
+              ),
+              AlamatRow(
+                onUpdatingChanged: (value) {
+                  setState(() {
+                    isUpdating = value;
+                  });
+                },
+                _address,
+                onAlamatSubmitted: (newAddress) {
+                  setState(() {
+                    _address = newAddress;
+                  });
+                },
+              ),
 
-                context.read<ProfileBloc>().add(
-                  OnUpdateProfile(updatedProfile),
-                );
-              },
-              child: Text("Simpan"),
-            ),
-          ],
+              MyButton(
+                isLoading: isUpdating,
+                text: "Simpan",
+                onPressed: () {
+                  if (!_formKey.currentState!.validate()) {
+                    return;
+                  }
+                  if(_address == null) {
+                    CustomSnackBar.showError(context, 'Alamat harus diisi');
+                    return;
+                  }
+                  final Profile updatedProfile = Profile(
+                    uid: widget.profile.uid,
+                    email: widget.profile.email,
+                    nama: _namaController.text,
+                    phoneNumber: _phoneController.text,
+                    address: _address,
+                  );
+
+                  context.read<ProfileBloc>().add(
+                    OnUpdateProfile(updatedProfile),
+                  );
+                },
+              ),
+              const SizedBox(height: 120),
+            ],
+          ),
         ),
       ),
     );

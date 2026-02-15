@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:a_and_w/features/auth/data/model/profile_model.dart';
-import 'package:a_and_w/features/auth/domain/entities/profile.dart';
+import 'package:a_and_w/core/entities/profile.dart';
+import 'package:a_and_w/core/models/address_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../../dummy_data/json_reader.dart';

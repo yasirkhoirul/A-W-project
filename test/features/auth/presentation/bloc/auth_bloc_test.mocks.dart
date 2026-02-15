@@ -5,6 +5,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i6;
 
+import 'package:a_and_w/core/entities/profile.dart' as _i13;
 import 'package:a_and_w/core/exceptions/failure.dart' as _i7;
 import 'package:a_and_w/features/auth/domain/entities/user.dart' as _i10;
 import 'package:a_and_w/features/auth/domain/repository/auth_repository.dart'
@@ -22,7 +23,7 @@ import 'package:a_and_w/features/auth/domain/usecases/sign_up_usecase.dart'
 import 'package:dartz/dartz.dart' as _i3;
 import 'package:firebase_auth/firebase_auth.dart' as _i4;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:mockito/src/dummies.dart' as _i13;
+import 'package:mockito/src/dummies.dart' as _i14;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -250,6 +251,122 @@ class MockCheckAuthStatusUseCase extends _i1.Mock
           as _i6.Stream<bool>);
 }
 
+/// A class which mocks [AuthRepository].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockAuthRepository extends _i1.Mock implements _i2.AuthRepository {
+  MockAuthRepository() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i6.Future<_i3.Either<_i7.Failure, _i4.User>> signInWithEmail(
+    String? email,
+    String? password,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#signInWithEmail, [email, password]),
+            returnValue: _i6.Future<_i3.Either<_i7.Failure, _i4.User>>.value(
+              _FakeEither_1<_i7.Failure, _i4.User>(
+                this,
+                Invocation.method(#signInWithEmail, [email, password]),
+              ),
+            ),
+          )
+          as _i6.Future<_i3.Either<_i7.Failure, _i4.User>>);
+
+  @override
+  _i6.Future<_i3.Either<_i7.Failure, _i4.User>> signUpWithEmail(
+    _i10.UserEntities? user,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#signUpWithEmail, [user]),
+            returnValue: _i6.Future<_i3.Either<_i7.Failure, _i4.User>>.value(
+              _FakeEither_1<_i7.Failure, _i4.User>(
+                this,
+                Invocation.method(#signUpWithEmail, [user]),
+              ),
+            ),
+          )
+          as _i6.Future<_i3.Either<_i7.Failure, _i4.User>>);
+
+  @override
+  _i6.Future<_i3.Either<_i7.Failure, _i4.User>> signInWithGoogle() =>
+      (super.noSuchMethod(
+            Invocation.method(#signInWithGoogle, []),
+            returnValue: _i6.Future<_i3.Either<_i7.Failure, _i4.User>>.value(
+              _FakeEither_1<_i7.Failure, _i4.User>(
+                this,
+                Invocation.method(#signInWithGoogle, []),
+              ),
+            ),
+          )
+          as _i6.Future<_i3.Either<_i7.Failure, _i4.User>>);
+
+  @override
+  _i6.Stream<_i3.Either<_i7.Failure, _i13.Profile?>> getProfile(String? uid) =>
+      (super.noSuchMethod(
+            Invocation.method(#getProfile, [uid]),
+            returnValue:
+                _i6.Stream<_i3.Either<_i7.Failure, _i13.Profile?>>.empty(),
+          )
+          as _i6.Stream<_i3.Either<_i7.Failure, _i13.Profile?>>);
+
+  @override
+  _i6.Future<_i3.Either<_i7.Failure, void>> updateProfile(
+    _i13.Profile? profile,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#updateProfile, [profile]),
+            returnValue: _i6.Future<_i3.Either<_i7.Failure, void>>.value(
+              _FakeEither_1<_i7.Failure, void>(
+                this,
+                Invocation.method(#updateProfile, [profile]),
+              ),
+            ),
+          )
+          as _i6.Future<_i3.Either<_i7.Failure, void>>);
+
+  @override
+  _i6.Future<_i3.Either<_i7.Failure, void>> signOut() =>
+      (super.noSuchMethod(
+            Invocation.method(#signOut, []),
+            returnValue: _i6.Future<_i3.Either<_i7.Failure, void>>.value(
+              _FakeEither_1<_i7.Failure, void>(
+                this,
+                Invocation.method(#signOut, []),
+              ),
+            ),
+          )
+          as _i6.Future<_i3.Either<_i7.Failure, void>>);
+
+  @override
+  _i6.Stream<bool> checkStatusAuth() =>
+      (super.noSuchMethod(
+            Invocation.method(#checkStatusAuth, []),
+            returnValue: _i6.Stream<bool>.empty(),
+          )
+          as _i6.Stream<bool>);
+
+  @override
+  _i6.Future<void> saveFcmToken(String? uid) =>
+      (super.noSuchMethod(
+            Invocation.method(#saveFcmToken, [uid]),
+            returnValue: _i6.Future<void>.value(),
+            returnValueForMissingStub: _i6.Future<void>.value(),
+          )
+          as _i6.Future<void>);
+
+  @override
+  _i6.Future<void> removeFcmToken(String? uid) =>
+      (super.noSuchMethod(
+            Invocation.method(#removeFcmToken, [uid]),
+            returnValue: _i6.Future<void>.value(),
+            returnValueForMissingStub: _i6.Future<void>.value(),
+          )
+          as _i6.Future<void>);
+}
+
 /// A class which mocks [User].
 ///
 /// See the documentation for Mockito's code generation for more information.
@@ -291,7 +408,7 @@ class MockUser extends _i1.Mock implements _i4.User {
   String get uid =>
       (super.noSuchMethod(
             Invocation.getter(#uid),
-            returnValue: _i13.dummyValue<String>(this, Invocation.getter(#uid)),
+            returnValue: _i14.dummyValue<String>(this, Invocation.getter(#uid)),
           )
           as String);
 

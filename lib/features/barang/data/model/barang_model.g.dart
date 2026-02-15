@@ -13,6 +13,7 @@ BarangModel _$BarangModelFromJson(Map<String, dynamic> json) => BarangModel(
   price: (json['price'] as num).toInt(),
   category: json['category'] as String,
   images: (json['images'] as List<dynamic>).map((e) => e as String).toList(),
+  weight: (json['weight'] as num).toInt(),
   createdBy: json['createdBy'] as String,
 );
 
@@ -24,5 +25,6 @@ Map<String, dynamic> _$BarangModelToJson(BarangModel instance) =>
       'price': instance.price,
       'category': instance.category,
       'images': instance.images,
+      'weight': instance.weight,
       'createdBy': instance.createdBy,
     };

@@ -1,4 +1,21 @@
-import {FieldValue} from "firebase-admin/firestore";
+import { FieldValue } from "firebase-admin/firestore";
+
+/**
+ * Data alamat (provinsi/kota/distrik)
+ */
+export interface DataAddress {
+  id: number;
+  nama: string;
+}
+
+/**
+ * Address untuk user
+ */
+export interface UserAddress {
+  provinsi: DataAddress;
+  kota: DataAddress;
+  district: DataAddress;
+}
 
 /**
  * User Model Interface
@@ -11,7 +28,8 @@ export interface UserModel {
   photoURL: string;
   role: "admin" | "user";
   phoneNumber: string | null;
-  address: string | null;
+  address: UserAddress | null;
+  fcmTokens: string[];
   createdAt: FieldValue;
   updatedAt: FieldValue;
 }

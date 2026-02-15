@@ -35,6 +35,10 @@ class HttpApiFailure extends Failure {
   const HttpApiFailure(super.message);
 }
 
+class CloudFunctionFailure extends Failure {
+  const CloudFunctionFailure(super.message);
+}
+
 /// Failure untuk Unknown errors
 class UnknownFailure extends Failure {
   const UnknownFailure([String? message]) 

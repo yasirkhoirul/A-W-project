@@ -1,5 +1,5 @@
 import 'package:a_and_w/core/exceptions/failure.dart';
-import 'package:a_and_w/features/auth/domain/entities/profile.dart';
+import 'package:a_and_w/core/entities/profile.dart';
 import 'package:a_and_w/features/auth/presentation/bloc/profile_bloc.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';

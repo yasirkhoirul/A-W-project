@@ -16,6 +16,7 @@ export interface ProductModel {
     price: number;
     category: ProductCategory;
     images: string[]; // Array URL gambar dari Storage
+    weight: number; // Berat dalam gram
     createdAt: FieldValue;
     updatedAt: FieldValue;
     createdBy: string; // UID admin yang membuat
@@ -30,4 +31,5 @@ export interface CreateProductInput {
     price: number;
     category: ProductCategory;
     images: string[]; // Array base64 images
+    weight: number; // Berat dalam gram
 }

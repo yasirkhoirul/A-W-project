@@ -17,3 +17,5 @@ class OnUpdateProfile extends ProfileEvent {
   @override
   List<Object> get props => [profile];
 }
+
+class OnClearProfile extends ProfileEvent {}

@@ -26,6 +26,7 @@ class UserRepository {
             role: "user",
             phoneNumber: input.phoneNumber || null,
             address: null,
+            fcmTokens: [],
             createdAt: firestore_1.FieldValue.serverTimestamp(),
             updatedAt: firestore_1.FieldValue.serverTimestamp(),
         };
@@ -40,6 +41,18 @@ class UserRepository {
     async userExists(uid) {
         const doc = await this.db.collection(this.collection).doc(uid).get();
         return doc.exists;
+    }
+    /**
+       * Ambil FCM tokens dari user document
+       * @param {string} uid User ID
+       * @return {Promise<string[]>} Array of FCM tokens
+       */
+    async getFcmTokens(uid) {
+        const doc = await this.db.collection(this.collection).doc(uid).get();
+        if (!doc.exists)
+            return [];
+        const data = doc.data();
+        return (data === null || data === void 0 ? void 0 : data.fcmTokens) || [];
     }
 }
 exports.UserRepository = UserRepository;

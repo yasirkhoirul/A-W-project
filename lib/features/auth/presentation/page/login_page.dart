@@ -1,5 +1,8 @@
 import 'package:a_and_w/core/router/router.dart';
 import 'package:a_and_w/core/utils/validators.dart';
+import 'package:a_and_w/core/widgets/button.dart';
+import 'package:a_and_w/core/widgets/form_layout.dart';
+import 'package:a_and_w/core/widgets/snackbar.dart';
 import 'package:a_and_w/core/widgets/text_field.dart';
 import 'package:a_and_w/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:flutter/material.dart';
@@ -28,15 +31,23 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Login")),
       body: Form(
         key: LoginPage.formKey,
         child: Column(
           children: [
             Expanded(
               child: SingleChildScrollView(
-                child: Column(
+                child: FormLayout(
                   children: [
+                    const SizedBox(height: 20),
+                    Image.asset('assets/images/logoshop.png',
+                      height: 150,
+                      width: 150,
+                    ),
+                    Text(
+                      "Welcome Back!",
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    ),
                     MyTextField(
                       label: "Email",
                       validator: Validators.email,
@@ -67,42 +78,42 @@ class _LoginPageState extends State<LoginPage> {
               child: BlocConsumer<AuthBloc, AuthState>(
                 listener: (context, state) {
                   if (state is AuthFailure) {
-                    ScaffoldMessenger.of(
-                      context,
-                    ).showSnackBar(SnackBar(content: Text(state.message)));
+                    CustomSnackBar.showError(context, state.message);
                   }
                   if (state is AuthSuccess) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Login berhasil")),
-                    );
+                    CustomSnackBar.showSuccess(context, 'Login berhasil');
                   }
                 },
                 builder: (context, state) {
-                  if (state is AuthLoading) {
-                    return const CircularProgressIndicator();
-                  }
-                  return Column(
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          if (LoginPage.formKey.currentState!.validate()) {
-                            context.read<AuthBloc>().add(
-                              OnLoginWithEmailEvent(
-                                email: emailController.text,
-                                password: passwordController.text,
-                              ),
-                            );
-                          }
-                        },
-                        child: const Text("Login"),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          context.read<AuthBloc>().add(OnLoginWithGoogleEvent());
-                        },
-                        child: const Text("Login With Google"),
-                      ),
-                    ],
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      spacing: 10,
+                      children: [
+                        MyButton(
+                          isLoading: state is AuthLoading,
+                          onPressed: () {
+                            if (LoginPage.formKey.currentState!.validate()) {
+                              context.read<AuthBloc>().add(
+                                OnLoginWithEmailEvent(
+                                  email: emailController.text,
+                                  password: passwordController.text,
+                                ),
+                              );
+                            }
+                          },
+                          text: "Login",
+                        ),
+                        MyButton(
+                          isLoading: state is AuthLoading,
+                          onPressed: () {
+                            context.read<AuthBloc>().add(OnLoginWithGoogleEvent());
+                          },
+                          icon: Icons.account_circle,
+                          text: "Login with Google",
+                        ),
+                      ],
+                    ),
                   );
                 },
               ),

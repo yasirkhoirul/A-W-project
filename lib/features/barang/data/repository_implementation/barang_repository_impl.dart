@@ -1,6 +1,7 @@
 import 'package:a_and_w/core/constant/enum.dart';
 import 'package:a_and_w/core/database/app_database.dart';
 import 'package:a_and_w/core/exceptions/exceptions.dart';
+import 'package:a_and_w/core/utils/safe_executor.dart';
 import 'package:a_and_w/features/barang/data/datasource/barang_local_datasource.dart';
 import 'package:a_and_w/features/barang/data/datasource/barang_remote_datasource.dart';
 import 'package:a_and_w/features/barang/domain/entities/barang_entity.dart';
@@ -19,102 +20,69 @@ class BarangRepositoryImpl implements BarangRepository {
   });
 
   @override
-  Future<Either<Failure, BarangEntity>> getBarang(String id) async {
-    try {
-      final result = await remoteDatasource.getBarang(id);
-      return Right(result);
-    } catch (e) {
-      return Left(ExceptionHandler.handle(e));
-    }
-  }
+  Future<Either<Failure, BarangEntity>> getBarang(String id) => safeExecute(
+    () async => (await remoteDatasource.getBarang(id)).toEntity(),
+  );
 
   @override
-  Future<Either<Failure, List<BarangEntity>>> getAllBarang() async {
-    try {
-      final result = await remoteDatasource.getAllBarang();
-      return Right(result);
-    } catch (e) {
-      return Left(ExceptionHandler.handle(e));
-    }
-  }
+  Future<Either<Failure, List<BarangEntity>>> getAllBarang() =>
+      safeExecute(() async {
+        final result = await remoteDatasource.getAllBarang();
+        return result.map((e) => e.toEntity()).toList();
+      });
 
   @override
   Future<Either<Failure, List<BarangEntity>>> getBarangByKategori(
     KategoriBarang kategori,
-  ) async {
-    try {
-      final result = await remoteDatasource.getBarangByKategori(kategori);
-      return Right(result);
-    } catch (e) {
-      return Left(ExceptionHandler.handle(e));
-    }
-  }
-
-  // === Keranjang ===
+  ) => safeExecute(() async {
+    final result = await remoteDatasource.getBarangByKategori(kategori);
+    return result.map((e) => e.toEntity()).toList();
+  });
 
   @override
-  Future<Either<Failure, List<KeranjangEntity>>> getKeranjang() async {
-    try {
-      final items = await localDatasource.getKeranjang();
-      final keranjangList = items
-          .map(
-            (item) => KeranjangEntity(
-              id: item.id,
-              barangId: item.barangId,
-              name: item.name,
-              price: item.price,
-              category: item.category,
-              image: item.image,
-              quantity: item.quantity,
-            ),
-          )
-          .toList();
-      return Right(keranjangList);
-    } catch (e) {
-      return Left(ExceptionHandler.handle(e));
-    }
-  }
+  Future<Either<Failure, List<KeranjangEntity>>> getKeranjang() =>
+      safeExecute(() async {
+        final items = await localDatasource.getKeranjang();
+        return items
+            .map(
+              (item) => KeranjangEntity(
+                id: item.id,
+                barangId: item.barangId,
+                name: item.name,
+                price: item.price,
+                category: item.category,
+                image: item.image,
+                weight: item.weight,
+                quantity: item.quantity,
+              ),
+            )
+            .toList();
+      });
 
   @override
-  Future<Either<Failure, void>> tambahBarangKeranjang(
-    BarangEntity barang,
-  ) async {
-    try {
-      final companion = KeranjangItemsCompanion(
-        barangId: Value(barang.id),
-        name: Value(barang.name),
-        price: Value(barang.price),
-        category: Value(barang.category),
-        image: Value(barang.images.isNotEmpty ? barang.images.first : ''),
-        quantity: const Value(1),
-      );
-      await localDatasource.tambahBarang(companion);
-      return const Right(null);
-    } catch (e) {
-      return Left(ExceptionHandler.handle(e));
-    }
-  }
+  Future<Either<Failure, void>> tambahBarangKeranjang(BarangEntity barang) =>
+      safeExecute(() async {
+        final companion = KeranjangItemsCompanion(
+          barangId: Value(barang.id),
+          name: Value(barang.name),
+          price: Value(barang.price),
+          category: Value(barang.category),
+          image: Value(barang.images.isNotEmpty ? barang.images.first : ''),
+          weight: Value(barang.weight),
+          quantity: const Value(1),
+        );
+        await localDatasource.tambahBarang(companion);
+      });
 
   @override
-  Future<Either<Failure, void>> hapusBarangKeranjang(String barangId) async {
-    try {
-      await localDatasource.hapusBarang(barangId);
-      return const Right(null);
-    } catch (e) {
-      return Left(ExceptionHandler.handle(e));
-    }
-  }
+  Future<Either<Failure, void>> hapusBarangKeranjang(String barangId) =>
+      safeExecute(() async => await localDatasource.hapusBarang(barangId));
 
   @override
   Future<Either<Failure, void>> updateKuantitasKeranjang(
     String barangId,
     int quantity,
-  ) async {
-    try {
-      await localDatasource.updateKuantitas(barangId, quantity);
-      return const Right(null);
-    } catch (e) {
-      return Left(ExceptionHandler.handle(e));
-    }
-  }
+  ) => safeExecute(
+    () async => await localDatasource.updateKuantitas(barangId, quantity),
+  );
 }

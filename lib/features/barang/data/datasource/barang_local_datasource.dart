@@ -20,20 +20,17 @@ class BarangLocalDatasourceImpl implements BarangLocalDatasource {
 
   @override
   Future<void> tambahBarang(KeranjangItemsCompanion item) async {
-    // Cek apakah barang sudah ada di keranjang
     final existing = await (db.select(
       db.keranjangItems,
     )..where((t) => t.barangId.equals(item.barangId.value))).getSingleOrNull();
 
     if (existing != null) {
-      // Jika sudah ada, tambah kuantitas
       await (db.update(
         db.keranjangItems,
       )..where((t) => t.barangId.equals(item.barangId.value))).write(
         KeranjangItemsCompanion(quantity: Value(existing.quantity + 1)),
       );
     } else {
-      // Jika belum ada, insert baru
       await db.into(db.keranjangItems).insert(item);
     }
   }

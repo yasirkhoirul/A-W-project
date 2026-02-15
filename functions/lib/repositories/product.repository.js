@@ -79,6 +79,7 @@ class ProductRepository {
             price: input.price,
             category: input.category,
             images: imageUrls,
+            weight: input.weight,
             createdAt: firestore_1.FieldValue.serverTimestamp(),
             updatedAt: firestore_1.FieldValue.serverTimestamp(),
             createdBy: createdBy,

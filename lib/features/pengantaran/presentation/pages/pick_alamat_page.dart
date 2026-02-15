@@ -40,7 +40,6 @@ class _PickAlamatPageState extends State<PickAlamatPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Dropdown Provinsi
           WilayahDropdown(
             label: "Provinsi",
             hint: "Pilih Provinsi",
@@ -57,8 +56,7 @@ class _PickAlamatPageState extends State<PickAlamatPage> {
             },
           ),
           const SizedBox(height: 16),
-
-          // Dropdown Kota
+  
           WilayahDropdown(
             label: "Kota/Kabupaten",
             hint: _provinsi == null ? "Pilih provinsi dulu" : "Pilih Kota",
@@ -80,7 +78,6 @@ class _PickAlamatPageState extends State<PickAlamatPage> {
           ),
           const SizedBox(height: 16),
 
-          // Dropdown Distrik
           WilayahDropdown(
             label: "Distrik/Kecamatan",
             hint: _kota == null ? "Pilih kota dulu" : "Pilih Distrik",
@@ -113,7 +110,6 @@ class _PickAlamatPageState extends State<PickAlamatPage> {
           const SizedBox(height: 16),
           ElevatedButton(
             onPressed: () {
-              // Validasi semua field
               if (_provinsi == null) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(

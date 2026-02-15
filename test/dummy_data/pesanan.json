@@ -1,0 +1,37 @@
+{
+  "user": {
+    "uid": "abc123",
+    "email": "user@gmail.com",
+    "displayName": "John Doe",
+    "photoURL": "https://...",
+    "phoneNumber": "+6281234567890"
+  },
+  "products": [
+    {
+      "id": "prod001",
+      "name": "A&W Root Beer Float",
+      "price": 35000,
+      "weight": 300,
+      "category": "makanan",
+      "images": ["https://..."],
+      "quantity": 2,
+      "subtotalPrice": 70000,
+      "subtotalWeight": 600
+    },
+    {
+      "id": "prod002",
+      "name": "Curly Fries",
+      "price": 25000,
+      "weight": 200,
+      "category": "makanan",
+      "images": ["https://..."],
+      "quantity": 1,
+      "subtotalPrice": 25000,
+      "subtotalWeight": 200
+    }
+  ],
+  "totalPrice": 95000,
+  "totalWeight": 800,
+  "totalItems": 3,
+  "productCount": 2
+}

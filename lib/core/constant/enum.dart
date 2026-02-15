@@ -28,3 +28,22 @@ enum KategoriBarang {
     );
   }
 }
+
+enum RequestStateCart {
+  empty,
+  loading,
+  loaded,
+  pilihkurir,
+  pilihmidtrans,
+  error,
+}
+
+enum ResponseMidtrans {
+  capture,
+  settlement,
+  pending,
+  failed,
+  deny,
+  expire,
+  cancel,
+}

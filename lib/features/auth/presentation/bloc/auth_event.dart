@@ -39,5 +39,10 @@ class OnLoginInstantEvent extends AuthEvent {
 }
 
 class OnLogoutEvent extends AuthEvent {
-  const OnLogoutEvent();
+  final ProfileBloc? profileBloc;
+  
+  const OnLogoutEvent({this.profileBloc});
+  
+  @override
+  List<Object?> get props => [profileBloc];
 }

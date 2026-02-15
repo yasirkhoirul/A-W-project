@@ -1,4 +1,4 @@
-import 'package:a_and_w/features/auth/domain/entities/profile.dart';
+import 'package:a_and_w/core/entities/profile.dart';
 import 'package:a_and_w/features/auth/domain/usecases/get_current_user_usecase.dart';
 import 'package:a_and_w/features/auth/domain/usecases/get_profile_usecase.dart';
 import 'package:a_and_w/features/auth/domain/usecases/update_profile_usecase.dart';
@@ -43,6 +43,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         (failure) => emit(ProfileError()),
         (_) => emit(ProfileLoaded(event.profile)),
       );
-    },);
+    });
+
+    on<OnClearProfile>((event, emit) {
+      emit(ProfileInitial());
+    });
   }
 }

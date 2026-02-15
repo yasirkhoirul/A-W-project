@@ -4,27 +4,37 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i7;
-import 'dart:typed_data' as _i17;
+import 'dart:typed_data' as _i21;
 
-import 'package:a_and_w/core/exceptions/failure.dart' as _i9;
-import 'package:a_and_w/features/auth/domain/entities/profile.dart' as _i11;
-import 'package:a_and_w/features/auth/domain/entities/user.dart' as _i10;
+import 'package:a_and_w/core/entities/cart_input.dart' as _i19;
+import 'package:a_and_w/core/entities/profile.dart' as _i13;
+import 'package:a_and_w/core/exceptions/failure.dart' as _i11;
+import 'package:a_and_w/features/auth/domain/entities/user.dart' as _i12;
 import 'package:a_and_w/features/auth/domain/repository/auth_repository.dart'
     as _i8;
 import 'package:a_and_w/features/auth/domain/usecases/get_current_user_usecase.dart'
-    as _i20;
+    as _i24;
 import 'package:a_and_w/features/auth/domain/usecases/get_profile_usecase.dart'
-    as _i18;
+    as _i22;
 import 'package:a_and_w/features/auth/domain/usecases/update_profile_usecase.dart'
-    as _i19;
+    as _i23;
 import 'package:a_and_w/features/pengantaran/domain/entities/data_cek_entity.dart'
-    as _i15;
-import 'package:a_and_w/features/pengantaran/domain/entities/data_track_entity.dart'
     as _i16;
+import 'package:a_and_w/features/pengantaran/domain/entities/data_track_entity.dart'
+    as _i17;
 import 'package:a_and_w/features/pengantaran/domain/entities/data_wilayah_entity.dart'
-    as _i14;
+    as _i15;
 import 'package:a_and_w/features/pengantaran/domain/repository/pengantaran_repository.dart'
-    as _i13;
+    as _i10;
+import 'package:a_and_w/features/pengantaran/domain/usecase/cost_pengantaran.dart'
+    as _i26;
+import 'package:a_and_w/features/pesanan/domain/entities/cart_entity.dart'
+    as _i18;
+import 'package:a_and_w/features/pesanan/domain/entities/pesanan.dart' as _i20;
+import 'package:a_and_w/features/pesanan/domain/repository/pesanan_repository.dart'
+    as _i9;
+import 'package:a_and_w/features/pesanan/domain/usecase/submit_pesanan.dart'
+    as _i25;
 import 'package:cloud_firestore/cloud_firestore.dart' as _i6;
 import 'package:cloud_firestore_platform_interface/cloud_firestore_platform_interface.dart'
     as _i5;
@@ -32,7 +42,7 @@ import 'package:dartz/dartz.dart' as _i2;
 import 'package:firebase_auth/firebase_auth.dart' as _i3;
 import 'package:firebase_core/firebase_core.dart' as _i4;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:mockito/src/dummies.dart' as _i12;
+import 'package:mockito/src/dummies.dart' as _i14;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -142,6 +152,18 @@ class _FakeAuthRepository_16 extends _i1.SmartFake
     : super(parent, parentInvocation);
 }
 
+class _FakePesananRepository_17 extends _i1.SmartFake
+    implements _i9.PesananRepository {
+  _FakePesananRepository_17(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakePengantaranRepository_18 extends _i1.SmartFake
+    implements _i10.PengantaranRepository {
+  _FakePengantaranRepository_18(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
 /// A class which mocks [AuthRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
@@ -151,85 +173,85 @@ class MockAuthRepository extends _i1.Mock implements _i8.AuthRepository {
   }
 
   @override
-  _i7.Future<_i2.Either<_i9.Failure, _i3.User>> signInWithEmail(
+  _i7.Future<_i2.Either<_i11.Failure, _i3.User>> signInWithEmail(
     String? email,
     String? password,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#signInWithEmail, [email, password]),
-            returnValue: _i7.Future<_i2.Either<_i9.Failure, _i3.User>>.value(
-              _FakeEither_0<_i9.Failure, _i3.User>(
+            returnValue: _i7.Future<_i2.Either<_i11.Failure, _i3.User>>.value(
+              _FakeEither_0<_i11.Failure, _i3.User>(
                 this,
                 Invocation.method(#signInWithEmail, [email, password]),
               ),
             ),
           )
-          as _i7.Future<_i2.Either<_i9.Failure, _i3.User>>);
+          as _i7.Future<_i2.Either<_i11.Failure, _i3.User>>);
 
   @override
-  _i7.Future<_i2.Either<_i9.Failure, _i3.User>> signUpWithEmail(
-    _i10.UserEntities? user,
+  _i7.Future<_i2.Either<_i11.Failure, _i3.User>> signUpWithEmail(
+    _i12.UserEntities? user,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#signUpWithEmail, [user]),
-            returnValue: _i7.Future<_i2.Either<_i9.Failure, _i3.User>>.value(
-              _FakeEither_0<_i9.Failure, _i3.User>(
+            returnValue: _i7.Future<_i2.Either<_i11.Failure, _i3.User>>.value(
+              _FakeEither_0<_i11.Failure, _i3.User>(
                 this,
                 Invocation.method(#signUpWithEmail, [user]),
               ),
             ),
           )
-          as _i7.Future<_i2.Either<_i9.Failure, _i3.User>>);
+          as _i7.Future<_i2.Either<_i11.Failure, _i3.User>>);
 
   @override
-  _i7.Future<_i2.Either<_i9.Failure, _i3.User>> signInWithGoogle() =>
+  _i7.Future<_i2.Either<_i11.Failure, _i3.User>> signInWithGoogle() =>
       (super.noSuchMethod(
             Invocation.method(#signInWithGoogle, []),
-            returnValue: _i7.Future<_i2.Either<_i9.Failure, _i3.User>>.value(
-              _FakeEither_0<_i9.Failure, _i3.User>(
+            returnValue: _i7.Future<_i2.Either<_i11.Failure, _i3.User>>.value(
+              _FakeEither_0<_i11.Failure, _i3.User>(
                 this,
                 Invocation.method(#signInWithGoogle, []),
               ),
             ),
           )
-          as _i7.Future<_i2.Either<_i9.Failure, _i3.User>>);
+          as _i7.Future<_i2.Either<_i11.Failure, _i3.User>>);
 
   @override
-  _i7.Stream<_i2.Either<_i9.Failure, _i11.Profile?>> getProfile(String? uid) =>
+  _i7.Stream<_i2.Either<_i11.Failure, _i13.Profile?>> getProfile(String? uid) =>
       (super.noSuchMethod(
             Invocation.method(#getProfile, [uid]),
             returnValue:
-                _i7.Stream<_i2.Either<_i9.Failure, _i11.Profile?>>.empty(),
+                _i7.Stream<_i2.Either<_i11.Failure, _i13.Profile?>>.empty(),
           )
-          as _i7.Stream<_i2.Either<_i9.Failure, _i11.Profile?>>);
+          as _i7.Stream<_i2.Either<_i11.Failure, _i13.Profile?>>);
 
   @override
-  _i7.Future<_i2.Either<_i9.Failure, void>> updateProfile(
-    _i11.Profile? profile,
+  _i7.Future<_i2.Either<_i11.Failure, void>> updateProfile(
+    _i13.Profile? profile,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#updateProfile, [profile]),
-            returnValue: _i7.Future<_i2.Either<_i9.Failure, void>>.value(
-              _FakeEither_0<_i9.Failure, void>(
+            returnValue: _i7.Future<_i2.Either<_i11.Failure, void>>.value(
+              _FakeEither_0<_i11.Failure, void>(
                 this,
                 Invocation.method(#updateProfile, [profile]),
               ),
             ),
           )
-          as _i7.Future<_i2.Either<_i9.Failure, void>>);
+          as _i7.Future<_i2.Either<_i11.Failure, void>>);
 
   @override
-  _i7.Future<_i2.Either<_i9.Failure, void>> signOut() =>
+  _i7.Future<_i2.Either<_i11.Failure, void>> signOut() =>
       (super.noSuchMethod(
             Invocation.method(#signOut, []),
-            returnValue: _i7.Future<_i2.Either<_i9.Failure, void>>.value(
-              _FakeEither_0<_i9.Failure, void>(
+            returnValue: _i7.Future<_i2.Either<_i11.Failure, void>>.value(
+              _FakeEither_0<_i11.Failure, void>(
                 this,
                 Invocation.method(#signOut, []),
               ),
             ),
           )
-          as _i7.Future<_i2.Either<_i9.Failure, void>>);
+          as _i7.Future<_i2.Either<_i11.Failure, void>>);
 
   @override
   _i7.Stream<bool> checkStatusAuth() =>
@@ -238,6 +260,24 @@ class MockAuthRepository extends _i1.Mock implements _i8.AuthRepository {
             returnValue: _i7.Stream<bool>.empty(),
           )
           as _i7.Stream<bool>);
+
+  @override
+  _i7.Future<void> saveFcmToken(String? uid) =>
+      (super.noSuchMethod(
+            Invocation.method(#saveFcmToken, [uid]),
+            returnValue: _i7.Future<void>.value(),
+            returnValueForMissingStub: _i7.Future<void>.value(),
+          )
+          as _i7.Future<void>);
+
+  @override
+  _i7.Future<void> removeFcmToken(String? uid) =>
+      (super.noSuchMethod(
+            Invocation.method(#removeFcmToken, [uid]),
+            returnValue: _i7.Future<void>.value(),
+            returnValueForMissingStub: _i7.Future<void>.value(),
+          )
+          as _i7.Future<void>);
 }
 
 /// A class which mocks [User].
@@ -281,7 +321,7 @@ class MockUser extends _i1.Mock implements _i3.User {
   String get uid =>
       (super.noSuchMethod(
             Invocation.getter(#uid),
-            returnValue: _i12.dummyValue<String>(this, Invocation.getter(#uid)),
+            returnValue: _i14.dummyValue<String>(this, Invocation.getter(#uid)),
           )
           as String);
 
@@ -551,99 +591,149 @@ class MockUser extends _i1.Mock implements _i3.User {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockPengantaranRepository extends _i1.Mock
-    implements _i13.PengantaranRepository {
+    implements _i10.PengantaranRepository {
   MockPengantaranRepository() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i7.Future<_i2.Either<_i9.Failure, List<_i14.DataWilayahEntity>>>
+  _i7.Future<_i2.Either<_i11.Failure, List<_i15.DataWilayahEntity>>>
   getProvinsi() =>
       (super.noSuchMethod(
             Invocation.method(#getProvinsi, []),
             returnValue:
                 _i7.Future<
-                  _i2.Either<_i9.Failure, List<_i14.DataWilayahEntity>>
+                  _i2.Either<_i11.Failure, List<_i15.DataWilayahEntity>>
                 >.value(
-                  _FakeEither_0<_i9.Failure, List<_i14.DataWilayahEntity>>(
+                  _FakeEither_0<_i11.Failure, List<_i15.DataWilayahEntity>>(
                     this,
                     Invocation.method(#getProvinsi, []),
                   ),
                 ),
           )
-          as _i7.Future<_i2.Either<_i9.Failure, List<_i14.DataWilayahEntity>>>);
+          as _i7.Future<
+            _i2.Either<_i11.Failure, List<_i15.DataWilayahEntity>>
+          >);
 
   @override
-  _i7.Future<_i2.Either<_i9.Failure, List<_i14.DataWilayahEntity>>> getKota(
+  _i7.Future<_i2.Either<_i11.Failure, List<_i15.DataWilayahEntity>>> getKota(
     String? provinsiId,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#getKota, [provinsiId]),
             returnValue:
                 _i7.Future<
-                  _i2.Either<_i9.Failure, List<_i14.DataWilayahEntity>>
+                  _i2.Either<_i11.Failure, List<_i15.DataWilayahEntity>>
                 >.value(
-                  _FakeEither_0<_i9.Failure, List<_i14.DataWilayahEntity>>(
+                  _FakeEither_0<_i11.Failure, List<_i15.DataWilayahEntity>>(
                     this,
                     Invocation.method(#getKota, [provinsiId]),
                   ),
                 ),
           )
-          as _i7.Future<_i2.Either<_i9.Failure, List<_i14.DataWilayahEntity>>>);
+          as _i7.Future<
+            _i2.Either<_i11.Failure, List<_i15.DataWilayahEntity>>
+          >);
 
   @override
-  _i7.Future<_i2.Either<_i9.Failure, List<_i14.DataWilayahEntity>>> getDistrik(
+  _i7.Future<_i2.Either<_i11.Failure, List<_i15.DataWilayahEntity>>> getDistrik(
     String? kotaId,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#getDistrik, [kotaId]),
             returnValue:
                 _i7.Future<
-                  _i2.Either<_i9.Failure, List<_i14.DataWilayahEntity>>
+                  _i2.Either<_i11.Failure, List<_i15.DataWilayahEntity>>
                 >.value(
-                  _FakeEither_0<_i9.Failure, List<_i14.DataWilayahEntity>>(
+                  _FakeEither_0<_i11.Failure, List<_i15.DataWilayahEntity>>(
                     this,
                     Invocation.method(#getDistrik, [kotaId]),
                   ),
                 ),
           )
-          as _i7.Future<_i2.Either<_i9.Failure, List<_i14.DataWilayahEntity>>>);
+          as _i7.Future<
+            _i2.Either<_i11.Failure, List<_i15.DataWilayahEntity>>
+          >);
 
   @override
-  _i7.Future<_i2.Either<_i9.Failure, List<_i15.DataCekEntity>>> getCekHarga(
-    _i15.DataCekRequestEntity? data,
+  _i7.Future<_i2.Either<_i11.Failure, List<_i16.DataCekEntity>>> getCekHarga(
+    _i16.DataCekRequestEntity? data,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#getCekHarga, [data]),
             returnValue:
                 _i7.Future<
-                  _i2.Either<_i9.Failure, List<_i15.DataCekEntity>>
+                  _i2.Either<_i11.Failure, List<_i16.DataCekEntity>>
                 >.value(
-                  _FakeEither_0<_i9.Failure, List<_i15.DataCekEntity>>(
+                  _FakeEither_0<_i11.Failure, List<_i16.DataCekEntity>>(
                     this,
                     Invocation.method(#getCekHarga, [data]),
                   ),
                 ),
           )
-          as _i7.Future<_i2.Either<_i9.Failure, List<_i15.DataCekEntity>>>);
+          as _i7.Future<_i2.Either<_i11.Failure, List<_i16.DataCekEntity>>>);
 
   @override
-  _i7.Future<_i2.Either<_i9.Failure, List<_i16.DataTrackEntity>>> getTrack(
-    _i16.DataTrackRequestEntity? data,
+  _i7.Future<_i2.Either<_i11.Failure, List<_i17.DataTrackEntity>>> getTrack(
+    _i17.DataTrackRequestEntity? data,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#getTrack, [data]),
             returnValue:
                 _i7.Future<
-                  _i2.Either<_i9.Failure, List<_i16.DataTrackEntity>>
+                  _i2.Either<_i11.Failure, List<_i17.DataTrackEntity>>
                 >.value(
-                  _FakeEither_0<_i9.Failure, List<_i16.DataTrackEntity>>(
+                  _FakeEither_0<_i11.Failure, List<_i17.DataTrackEntity>>(
                     this,
                     Invocation.method(#getTrack, [data]),
                   ),
                 ),
           )
-          as _i7.Future<_i2.Either<_i9.Failure, List<_i16.DataTrackEntity>>>);
+          as _i7.Future<_i2.Either<_i11.Failure, List<_i17.DataTrackEntity>>>);
+}
+
+/// A class which mocks [PesananRepository].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockPesananRepository extends _i1.Mock implements _i9.PesananRepository {
+  MockPesananRepository() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i7.Future<_i2.Either<_i11.Failure, _i18.CartEntity>> createCart(
+    List<_i19.CartInput>? items,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#createCart, [items]),
+            returnValue:
+                _i7.Future<_i2.Either<_i11.Failure, _i18.CartEntity>>.value(
+                  _FakeEither_0<_i11.Failure, _i18.CartEntity>(
+                    this,
+                    Invocation.method(#createCart, [items]),
+                  ),
+                ),
+          )
+          as _i7.Future<_i2.Either<_i11.Failure, _i18.CartEntity>>);
+
+  @override
+  _i7.Future<_i2.Either<_i11.Failure, _i20.SubmitPesananEntity>> submitPesanan(
+    _i18.CartEntity? cart,
+    _i16.DataCekEntity? selectedShipping,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#submitPesanan, [cart, selectedShipping]),
+            returnValue:
+                _i7.Future<
+                  _i2.Either<_i11.Failure, _i20.SubmitPesananEntity>
+                >.value(
+                  _FakeEither_0<_i11.Failure, _i20.SubmitPesananEntity>(
+                    this,
+                    Invocation.method(#submitPesanan, [cart, selectedShipping]),
+                  ),
+                ),
+          )
+          as _i7.Future<_i2.Either<_i11.Failure, _i20.SubmitPesananEntity>>);
 }
 
 /// A class which mocks [FirebaseFirestore].
@@ -666,7 +756,7 @@ class MockFirebaseFirestore extends _i1.Mock implements _i6.FirebaseFirestore {
   String get databaseId =>
       (super.noSuchMethod(
             Invocation.getter(#databaseId),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#databaseId),
             ),
@@ -741,7 +831,7 @@ class MockFirebaseFirestore extends _i1.Mock implements _i6.FirebaseFirestore {
           as _i7.Future<void>);
 
   @override
-  _i6.LoadBundleTask loadBundle(_i17.Uint8List? bundle) =>
+  _i6.LoadBundleTask loadBundle(_i21.Uint8List? bundle) =>
       (super.noSuchMethod(
             Invocation.method(#loadBundle, [bundle]),
             returnValue: _FakeLoadBundleTask_11(
@@ -882,8 +972,8 @@ class MockFirebaseFirestore extends _i1.Mock implements _i6.FirebaseFirestore {
               {#timeout: timeout, #maxAttempts: maxAttempts},
             ),
             returnValue:
-                _i12.ifNotNull(
-                  _i12.dummyValueOrNull<T>(
+                _i14.ifNotNull(
+                  _i14.dummyValueOrNull<T>(
                     this,
                     Invocation.method(
                       #runTransaction,
@@ -935,7 +1025,7 @@ class MockFirebaseFirestore extends _i1.Mock implements _i6.FirebaseFirestore {
 /// A class which mocks [GetProfileUsecase].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockGetProfileUsecase extends _i1.Mock implements _i18.GetProfileUsecase {
+class MockGetProfileUsecase extends _i1.Mock implements _i22.GetProfileUsecase {
   MockGetProfileUsecase() {
     _i1.throwOnMissingStub(this);
   }
@@ -952,20 +1042,20 @@ class MockGetProfileUsecase extends _i1.Mock implements _i18.GetProfileUsecase {
           as _i8.AuthRepository);
 
   @override
-  _i7.Stream<_i2.Either<_i9.Failure, _i11.Profile?>> call(String? uid) =>
+  _i7.Stream<_i2.Either<_i11.Failure, _i13.Profile?>> call(String? uid) =>
       (super.noSuchMethod(
             Invocation.method(#call, [uid]),
             returnValue:
-                _i7.Stream<_i2.Either<_i9.Failure, _i11.Profile?>>.empty(),
+                _i7.Stream<_i2.Either<_i11.Failure, _i13.Profile?>>.empty(),
           )
-          as _i7.Stream<_i2.Either<_i9.Failure, _i11.Profile?>>);
+          as _i7.Stream<_i2.Either<_i11.Failure, _i13.Profile?>>);
 }
 
 /// A class which mocks [UpdateProfileUsecase].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockUpdateProfileUsecase extends _i1.Mock
-    implements _i19.UpdateProfileUsecase {
+    implements _i23.UpdateProfileUsecase {
   MockUpdateProfileUsecase() {
     _i1.throwOnMissingStub(this);
   }
@@ -982,24 +1072,24 @@ class MockUpdateProfileUsecase extends _i1.Mock
           as _i8.AuthRepository);
 
   @override
-  _i7.Future<_i2.Either<_i9.Failure, void>> call(_i11.Profile? profile) =>
+  _i7.Future<_i2.Either<_i11.Failure, void>> call(_i13.Profile? profile) =>
       (super.noSuchMethod(
             Invocation.method(#call, [profile]),
-            returnValue: _i7.Future<_i2.Either<_i9.Failure, void>>.value(
-              _FakeEither_0<_i9.Failure, void>(
+            returnValue: _i7.Future<_i2.Either<_i11.Failure, void>>.value(
+              _FakeEither_0<_i11.Failure, void>(
                 this,
                 Invocation.method(#call, [profile]),
               ),
             ),
           )
-          as _i7.Future<_i2.Either<_i9.Failure, void>>);
+          as _i7.Future<_i2.Either<_i11.Failure, void>>);
 }
 
 /// A class which mocks [GetCurrentUserUseCase].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockGetCurrentUserUseCase extends _i1.Mock
-    implements _i20.GetCurrentUserUseCase {
+    implements _i24.GetCurrentUserUseCase {
   MockGetCurrentUserUseCase() {
     _i1.throwOnMissingStub(this);
   }
@@ -1014,4 +1104,81 @@ class MockGetCurrentUserUseCase extends _i1.Mock
             ),
           )
           as _i8.AuthRepository);
+}
+
+/// A class which mocks [SubmitPesanan].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockSubmitPesanan extends _i1.Mock implements _i25.SubmitPesanan {
+  MockSubmitPesanan() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i9.PesananRepository get repository =>
+      (super.noSuchMethod(
+            Invocation.getter(#repository),
+            returnValue: _FakePesananRepository_17(
+              this,
+              Invocation.getter(#repository),
+            ),
+          )
+          as _i9.PesananRepository);
+
+  @override
+  _i7.Future<_i2.Either<_i11.Failure, _i20.SubmitPesananEntity>> call(
+    _i18.CartEntity? cart,
+    _i16.DataCekEntity? selectedShipping,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#call, [cart, selectedShipping]),
+            returnValue:
+                _i7.Future<
+                  _i2.Either<_i11.Failure, _i20.SubmitPesananEntity>
+                >.value(
+                  _FakeEither_0<_i11.Failure, _i20.SubmitPesananEntity>(
+                    this,
+                    Invocation.method(#call, [cart, selectedShipping]),
+                  ),
+                ),
+          )
+          as _i7.Future<_i2.Either<_i11.Failure, _i20.SubmitPesananEntity>>);
+}
+
+/// A class which mocks [CostPengantaran].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockCostPengantaran extends _i1.Mock implements _i26.CostPengantaran {
+  MockCostPengantaran() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i10.PengantaranRepository get pengantaranRepository =>
+      (super.noSuchMethod(
+            Invocation.getter(#pengantaranRepository),
+            returnValue: _FakePengantaranRepository_18(
+              this,
+              Invocation.getter(#pengantaranRepository),
+            ),
+          )
+          as _i10.PengantaranRepository);
+
+  @override
+  _i7.Future<_i2.Either<_i11.Failure, List<_i16.DataCekEntity>>> call(
+    _i16.DataCekRequestEntity? dataCekRequestEntity,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#call, [dataCekRequestEntity]),
+            returnValue:
+                _i7.Future<
+                  _i2.Either<_i11.Failure, List<_i16.DataCekEntity>>
+                >.value(
+                  _FakeEither_0<_i11.Failure, List<_i16.DataCekEntity>>(
+                    this,
+                    Invocation.method(#call, [dataCekRequestEntity]),
+                  ),
+                ),
+          )
+          as _i7.Future<_i2.Either<_i11.Failure, List<_i16.DataCekEntity>>>);
 }

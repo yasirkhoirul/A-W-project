@@ -41,7 +41,7 @@ export const createProduct = onCall(
       );
     }
 
-    const {name, description, price, category, images} = request.data;
+    const {name, description, price, category, images, weight} = request.data;
 
     // Validate required fields
     if (!name || typeof name !== "string") {
@@ -57,6 +57,12 @@ export const createProduct = onCall(
       throw new HttpsError(
         "invalid-argument",
         "Product price must be a positive number"
+      );
+    }
+    if (typeof weight !== "number" || weight <= 0) {
+      throw new HttpsError(
+        "invalid-argument",
+        "Product weight must be a positive number (in grams)"
       );
     }
     if (!category || !validCategories.includes(category)) {
@@ -79,6 +85,7 @@ export const createProduct = onCall(
         price,
         category,
         images,
+        weight,
       };
 
       const product = await productService.createProduct(
@@ -97,6 +104,7 @@ export const createProduct = onCall(
           price: product.price,
           category: product.category,
           images: product.images,
+          weight: product.weight,
         },
       };
     } catch (error) {

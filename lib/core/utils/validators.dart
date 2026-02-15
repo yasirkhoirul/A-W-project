@@ -1,6 +1,4 @@
 class Validators {
-  
-  // Validator dasar untuk field yang tidak boleh kosong
   static String? required(String? value, {String fieldName = "Field"}) {
     if (value == null || value.isEmpty) {
       return "$fieldName tidak boleh kosong";
@@ -8,7 +6,6 @@ class Validators {
     return null;
   }
 
-  // Validator untuk email
   static String? email(String? value) {
     if (value == null || value.isEmpty) {
       return "Email tidak boleh kosong";
@@ -20,7 +17,6 @@ class Validators {
     return null;
   }
 
-  // Validator untuk nomor HP Indonesia
   static String? phone(String? value) {
     if (value == null || value.isEmpty) {
       return "Nomor HP tidak boleh kosong";
@@ -32,7 +28,6 @@ class Validators {
     return null;
   }
 
-  // Validator untuk password (minimal 6 karakter)
   static String? password(String? value) {
     if (value == null || value.isEmpty) {
       return "Password tidak boleh kosong";
@@ -43,7 +38,6 @@ class Validators {
     return null;
   }
 
-  // Validator untuk confirm password
   static String? confirmPassword(String? value, String? originalPassword) {
     if (value == null || value.isEmpty) {
       return "Konfirmasi password tidak boleh kosong";

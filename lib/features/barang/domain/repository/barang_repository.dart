@@ -11,7 +11,6 @@ abstract class BarangRepository {
     KategoriBarang kategori,
   );
 
-  // Keranjang
   Future<Either<Failure, List<KeranjangEntity>>> getKeranjang();
   Future<Either<Failure, void>> tambahBarangKeranjang(BarangEntity barang);
   Future<Either<Failure, void>> hapusBarangKeranjang(String barangId);

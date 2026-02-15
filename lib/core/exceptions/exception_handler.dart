@@ -8,12 +8,10 @@ import 'package:a_and_w/core/exceptions/failure.dart';
 class ExceptionHandler {
   /// Convert exception ke Failure
   static Failure handle(dynamic error) {
-    // Firebase Auth Exception
     if (error is firebase_auth.FirebaseAuthException) {
       return AuthFailure(AuthException.fromFirebase(error).message);
     }
 
-    // Firebase Exception (Firestore/Storage)
     if (error is firebase_auth.FirebaseException) {
       if (error.plugin == 'cloud_firestore') {
         return DatabaseFailure(DatabaseException.fromFirebase(error).message);
@@ -21,9 +19,17 @@ class ExceptionHandler {
       if (error.plugin == 'firebase_storage') {
         return StorageFailure(StorageException.fromFirebase(error).message);
       }
+
+      if (error.plugin == 'cloud_functions') {
+        return CloudFunctionFailure(
+          CloudFunctionsException.getFunctionsMessage(
+            error.code,
+            error.message,
+          ),
+        );
+      }
     }
 
-    // HTTP API exception
     if (error is HttpException) {
       if (error is HttpNetworkException) {
         return const NetworkFailure();
@@ -34,7 +40,6 @@ class ExceptionHandler {
       return HttpApiFailure(error.message);
     }
 
-    // Custom Exceptions
     if (error is AuthException) {
       return AuthFailure(error.message);
     }
@@ -47,19 +52,19 @@ class ExceptionHandler {
     if (error is NetworkException) {
       return const NetworkFailure();
     }
+    if (error is CloudFunctionsException) {
+      return CloudFunctionFailure(error.message);
+    }
 
-    // Local database errors (Drift/SQLite)
     if (error is LocalDatabaseException) {
       return DatabaseFailure(error.message);
     }
 
-    // Network errors
     if (error.toString().contains('SocketException') ||
         error.toString().contains('network')) {
       return const NetworkFailure();
     }
 
-    // Default
     return UnknownFailure(error.toString());
   }
 }

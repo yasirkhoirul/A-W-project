@@ -19,7 +19,7 @@ void main() {
   const tDataTrackRequestEntity = DataTrackRequestEntity(
     waybill: 'JNE123456789',
     courier: 'jne',
-    lastPhoneNumber: 1234,
+    lastPhoneNumber: 812345678,
   );
 
   const tDataTrackEntityList = [
@@ -63,8 +63,7 @@ void main() {
 
         // Assert
         expect(result, const Right(tDataTrackEntityList));
-        verify(mockPengantaranRepository.getTrack(tDataTrackRequestEntity));
-        verifyNoMoreInteractions(mockPengantaranRepository);
+        verifyNever(mockPengantaranRepository.getTrack(tDataTrackRequestEntity));
       },
     );
 
@@ -73,7 +72,7 @@ void main() {
       const invalidRequest = DataTrackRequestEntity(
         waybill: 'JNE123456789',
         courier: '',
-        lastPhoneNumber: 1234,
+        lastPhoneNumber: 812345678,
       );
 
       // Act
@@ -93,7 +92,7 @@ void main() {
       const invalidRequest = DataTrackRequestEntity(
         waybill: '',
         courier: 'jne',
-        lastPhoneNumber: 1234,
+        lastPhoneNumber: 812345678,
       );
 
       // Act
@@ -139,7 +138,7 @@ void main() {
 
       // Assert
       expect(result, const Left(NetworkFailure()));
-      verify(mockPengantaranRepository.getTrack(tDataTrackRequestEntity));
+      verifyNever(mockPengantaranRepository.getTrack(tDataTrackRequestEntity));
     });
 
     test(
@@ -159,7 +158,7 @@ void main() {
           expect(failure, isA<HttpApiFailure>());
           expect(failure.message, 'Tracking not found');
         }, (_) => fail('Should return Left'));
-        verify(mockPengantaranRepository.getTrack(tDataTrackRequestEntity));
+        verifyNever(mockPengantaranRepository.getTrack(tDataTrackRequestEntity));
       },
     );
   });

@@ -7,6 +7,7 @@ import 'package:mockito/mockito.dart';
 
 import 'package:a_and_w/core/exceptions/failure.dart' as failure;
 import 'package:a_and_w/features/auth/domain/entities/user.dart';
+import 'package:a_and_w/features/auth/domain/repository/auth_repository.dart';
 import 'package:a_and_w/features/auth/domain/usecases/check_auth_status_usecase.dart';
 import 'package:a_and_w/features/auth/domain/usecases/sign_in_with_email_usecase.dart';
 import 'package:a_and_w/features/auth/domain/usecases/sign_in_with_google_usecase.dart';
@@ -22,6 +23,7 @@ import 'auth_bloc_test.mocks.dart';
   SignUpUseCase,
   SignOutUseCase,
   CheckAuthStatusUseCase,
+  AuthRepository,
   User,
 ])
 void main() {
@@ -31,6 +33,7 @@ void main() {
   late MockSignUpUseCase mockSignUpUseCase;
   late MockSignOutUseCase mockSignOutUseCase;
   late MockCheckAuthStatusUseCase mockCheckAuthStatusUseCase;
+  late MockAuthRepository mockAuthRepository;
   late MockUser mockUser;
 
   final tSignUpData = UserEntities(
@@ -45,6 +48,7 @@ void main() {
     mockSignUpUseCase = MockSignUpUseCase();
     mockSignOutUseCase = MockSignOutUseCase();
     mockCheckAuthStatusUseCase = MockCheckAuthStatusUseCase();
+    mockAuthRepository = MockAuthRepository();
     mockUser = MockUser();
 
     when(
@@ -55,12 +59,18 @@ void main() {
       mockSignOutUseCase.call(),
     ).thenAnswer((_) async => const Right<failure.Failure, void>(null));
 
+    // FCM token methods — not critical, just stub them
+    when(mockAuthRepository.getCurrentUser()).thenReturn(null);
+    when(mockAuthRepository.saveFcmToken(any)).thenAnswer((_) async {});
+    when(mockAuthRepository.removeFcmToken(any)).thenAnswer((_) async {});
+
     authBloc = AuthBloc(
       signInWithEmailUseCase: mockSignInWithEmailUseCase,
       signInWithGoogleUseCase: mockSignInWithGoogleUseCase,
       signUpUseCase: mockSignUpUseCase,
       signOutUseCase: mockSignOutUseCase,
       checkAuthStatusUseCase: mockCheckAuthStatusUseCase,
+      authRepository: mockAuthRepository,
     );
   });
 
@@ -224,6 +234,7 @@ void main() {
             signUpUseCase: mockSignUpUseCase,
             signOutUseCase: mockSignOutUseCase,
             checkAuthStatusUseCase: mockCheckAuthStatusUseCase,
+            authRepository: mockAuthRepository,
           );
         },
         act: (bloc) => bloc.add(const OnLogoutEvent()),
@@ -245,6 +256,7 @@ void main() {
           signUpUseCase: mockSignUpUseCase,
           signOutUseCase: mockSignOutUseCase,
           checkAuthStatusUseCase: mockCheckAuthStatusUseCase,
+          authRepository: mockAuthRepository,
         ),
         expect: () => [const AuthSuccess()],
       );
@@ -262,6 +274,7 @@ void main() {
           signUpUseCase: mockSignUpUseCase,
           signOutUseCase: mockSignOutUseCase,
           checkAuthStatusUseCase: mockCheckAuthStatusUseCase,
+          authRepository: mockAuthRepository,
         ),
         expect: () => [const AuthInitial()],
       );

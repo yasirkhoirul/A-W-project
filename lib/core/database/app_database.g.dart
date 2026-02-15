@@ -71,6 +71,15 @@ class $KeranjangItemsTable extends KeranjangItems
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _weightMeta = const VerificationMeta('weight');
+  @override
+  late final GeneratedColumn<int> weight = GeneratedColumn<int>(
+    'weight',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _quantityMeta = const VerificationMeta(
     'quantity',
   );
@@ -91,6 +100,7 @@ class $KeranjangItemsTable extends KeranjangItems
     price,
     category,
     image,
+    weight,
     quantity,
   ];
   @override
@@ -148,6 +158,14 @@ class $KeranjangItemsTable extends KeranjangItems
     } else if (isInserting) {
       context.missing(_imageMeta);
     }
+    if (data.containsKey('weight')) {
+      context.handle(
+        _weightMeta,
+        weight.isAcceptableOrUnknown(data['weight']!, _weightMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_weightMeta);
+    }
     if (data.containsKey('quantity')) {
       context.handle(
         _quantityMeta,
@@ -187,6 +205,10 @@ class $KeranjangItemsTable extends KeranjangItems
         DriftSqlType.string,
         data['${effectivePrefix}image'],
       )!,
+      weight: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}weight'],
+      )!,
       quantity: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}quantity'],
@@ -207,6 +229,7 @@ class KeranjangItem extends DataClass implements Insertable<KeranjangItem> {
   final int price;
   final String category;
   final String image;
+  final int weight;
   final int quantity;
   const KeranjangItem({
     required this.id,
@@ -215,6 +238,7 @@ class KeranjangItem extends DataClass implements Insertable<KeranjangItem> {
     required this.price,
     required this.category,
     required this.image,
+    required this.weight,
     required this.quantity,
   });
   @override
@@ -226,6 +250,7 @@ class KeranjangItem extends DataClass implements Insertable<KeranjangItem> {
     map['price'] = Variable<int>(price);
     map['category'] = Variable<String>(category);
     map['image'] = Variable<String>(image);
+    map['weight'] = Variable<int>(weight);
     map['quantity'] = Variable<int>(quantity);
     return map;
   }
@@ -238,6 +263,7 @@ class KeranjangItem extends DataClass implements Insertable<KeranjangItem> {
       price: Value(price),
       category: Value(category),
       image: Value(image),
+      weight: Value(weight),
       quantity: Value(quantity),
     );
   }
@@ -254,6 +280,7 @@ class KeranjangItem extends DataClass implements Insertable<KeranjangItem> {
       price: serializer.fromJson<int>(json['price']),
       category: serializer.fromJson<String>(json['category']),
       image: serializer.fromJson<String>(json['image']),
+      weight: serializer.fromJson<int>(json['weight']),
       quantity: serializer.fromJson<int>(json['quantity']),
     );
   }
@@ -267,6 +294,7 @@ class KeranjangItem extends DataClass implements Insertable<KeranjangItem> {
       'price': serializer.toJson<int>(price),
       'category': serializer.toJson<String>(category),
       'image': serializer.toJson<String>(image),
+      'weight': serializer.toJson<int>(weight),
       'quantity': serializer.toJson<int>(quantity),
     };
   }
@@ -278,6 +306,7 @@ class KeranjangItem extends DataClass implements Insertable<KeranjangItem> {
     int? price,
     String? category,
     String? image,
+    int? weight,
     int? quantity,
   }) => KeranjangItem(
     id: id ?? this.id,
@@ -286,6 +315,7 @@ class KeranjangItem extends DataClass implements Insertable<KeranjangItem> {
     price: price ?? this.price,
     category: category ?? this.category,
     image: image ?? this.image,
+    weight: weight ?? this.weight,
     quantity: quantity ?? this.quantity,
   );
   KeranjangItem copyWithCompanion(KeranjangItemsCompanion data) {
@@ -296,6 +326,7 @@ class KeranjangItem extends DataClass implements Insertable<KeranjangItem> {
       price: data.price.present ? data.price.value : this.price,
       category: data.category.present ? data.category.value : this.category,
       image: data.image.present ? data.image.value : this.image,
+      weight: data.weight.present ? data.weight.value : this.weight,
       quantity: data.quantity.present ? data.quantity.value : this.quantity,
     );
   }
@@ -309,6 +340,7 @@ class KeranjangItem extends DataClass implements Insertable<KeranjangItem> {
           ..write('price: $price, ')
           ..write('category: $category, ')
           ..write('image: $image, ')
+          ..write('weight: $weight, ')
           ..write('quantity: $quantity')
           ..write(')'))
         .toString();
@@ -316,7 +348,7 @@ class KeranjangItem extends DataClass implements Insertable<KeranjangItem> {
 
   @override
   int get hashCode =>
-      Object.hash(id, barangId, name, price, category, image, quantity);
+      Object.hash(id, barangId, name, price, category, image, weight, quantity);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -327,6 +359,7 @@ class KeranjangItem extends DataClass implements Insertable<KeranjangItem> {
           other.price == this.price &&
           other.category == this.category &&
           other.image == this.image &&
+          other.weight == this.weight &&
           other.quantity == this.quantity);
 }
 
@@ -337,6 +370,7 @@ class KeranjangItemsCompanion extends UpdateCompanion<KeranjangItem> {
   final Value<int> price;
   final Value<String> category;
   final Value<String> image;
+  final Value<int> weight;
   final Value<int> quantity;
   const KeranjangItemsCompanion({
     this.id = const Value.absent(),
@@ -345,6 +379,7 @@ class KeranjangItemsCompanion extends UpdateCompanion<KeranjangItem> {
     this.price = const Value.absent(),
     this.category = const Value.absent(),
     this.image = const Value.absent(),
+    this.weight = const Value.absent(),
     this.quantity = const Value.absent(),
   });
   KeranjangItemsCompanion.insert({
@@ -354,12 +389,14 @@ class KeranjangItemsCompanion extends UpdateCompanion<KeranjangItem> {
     required int price,
     required String category,
     required String image,
+    required int weight,
     this.quantity = const Value.absent(),
   }) : barangId = Value(barangId),
        name = Value(name),
        price = Value(price),
        category = Value(category),
-       image = Value(image);
+       image = Value(image),
+       weight = Value(weight);
   static Insertable<KeranjangItem> custom({
     Expression<int>? id,
     Expression<String>? barangId,
@@ -367,6 +404,7 @@ class KeranjangItemsCompanion extends UpdateCompanion<KeranjangItem> {
     Expression<int>? price,
     Expression<String>? category,
     Expression<String>? image,
+    Expression<int>? weight,
     Expression<int>? quantity,
   }) {
     return RawValuesInsertable({
@@ -376,6 +414,7 @@ class KeranjangItemsCompanion extends UpdateCompanion<KeranjangItem> {
       if (price != null) 'price': price,
       if (category != null) 'category': category,
       if (image != null) 'image': image,
+      if (weight != null) 'weight': weight,
       if (quantity != null) 'quantity': quantity,
     });
   }
@@ -387,6 +426,7 @@ class KeranjangItemsCompanion extends UpdateCompanion<KeranjangItem> {
     Value<int>? price,
     Value<String>? category,
     Value<String>? image,
+    Value<int>? weight,
     Value<int>? quantity,
   }) {
     return KeranjangItemsCompanion(
@@ -396,6 +436,7 @@ class KeranjangItemsCompanion extends UpdateCompanion<KeranjangItem> {
       price: price ?? this.price,
       category: category ?? this.category,
       image: image ?? this.image,
+      weight: weight ?? this.weight,
       quantity: quantity ?? this.quantity,
     );
   }
@@ -421,6 +462,9 @@ class KeranjangItemsCompanion extends UpdateCompanion<KeranjangItem> {
     if (image.present) {
       map['image'] = Variable<String>(image.value);
     }
+    if (weight.present) {
+      map['weight'] = Variable<int>(weight.value);
+    }
     if (quantity.present) {
       map['quantity'] = Variable<int>(quantity.value);
     }
@@ -436,6 +480,7 @@ class KeranjangItemsCompanion extends UpdateCompanion<KeranjangItem> {
           ..write('price: $price, ')
           ..write('category: $category, ')
           ..write('image: $image, ')
+          ..write('weight: $weight, ')
           ..write('quantity: $quantity')
           ..write(')'))
         .toString();
@@ -461,6 +506,7 @@ typedef $$KeranjangItemsTableCreateCompanionBuilder =
       required int price,
       required String category,
       required String image,
+      required int weight,
       Value<int> quantity,
     });
 typedef $$KeranjangItemsTableUpdateCompanionBuilder =
@@ -471,6 +517,7 @@ typedef $$KeranjangItemsTableUpdateCompanionBuilder =
       Value<int> price,
       Value<String> category,
       Value<String> image,
+      Value<int> weight,
       Value<int> quantity,
     });
 
@@ -510,6 +557,11 @@ class $$KeranjangItemsTableFilterComposer
 
   ColumnFilters<String> get image => $composableBuilder(
     column: $table.image,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get weight => $composableBuilder(
+    column: $table.weight,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -558,6 +610,11 @@ class $$KeranjangItemsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<int> get weight => $composableBuilder(
+    column: $table.weight,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<int> get quantity => $composableBuilder(
     column: $table.quantity,
     builder: (column) => ColumnOrderings(column),
@@ -590,6 +647,9 @@ class $$KeranjangItemsTableAnnotationComposer
 
   GeneratedColumn<String> get image =>
       $composableBuilder(column: $table.image, builder: (column) => column);
+
+  GeneratedColumn<int> get weight =>
+      $composableBuilder(column: $table.weight, builder: (column) => column);
 
   GeneratedColumn<int> get quantity =>
       $composableBuilder(column: $table.quantity, builder: (column) => column);
@@ -634,6 +694,7 @@ class $$KeranjangItemsTableTableManager
                 Value<int> price = const Value.absent(),
                 Value<String> category = const Value.absent(),
                 Value<String> image = const Value.absent(),
+                Value<int> weight = const Value.absent(),
                 Value<int> quantity = const Value.absent(),
               }) => KeranjangItemsCompanion(
                 id: id,
@@ -642,6 +703,7 @@ class $$KeranjangItemsTableTableManager
                 price: price,
                 category: category,
                 image: image,
+                weight: weight,
                 quantity: quantity,
               ),
           createCompanionCallback:
@@ -652,6 +714,7 @@ class $$KeranjangItemsTableTableManager
                 required int price,
                 required String category,
                 required String image,
+                required int weight,
                 Value<int> quantity = const Value.absent(),
               }) => KeranjangItemsCompanion.insert(
                 id: id,
@@ -660,6 +723,7 @@ class $$KeranjangItemsTableTableManager
                 price: price,
                 category: category,
                 image: image,
+                weight: weight,
                 quantity: quantity,
               ),
           withReferenceMapper: (p0) => p0

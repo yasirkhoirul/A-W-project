@@ -107,3 +107,27 @@ class UnknownException extends FirebaseException {
   const UnknownException([String? message]) 
       : super(message ?? 'Terjadi kesalahan');
 }
+
+/// Exception untuk Cloud Functions
+class CloudFunctionsException extends FirebaseException {
+  const CloudFunctionsException(super.message, [super.code]);
+
+  static String getFunctionsMessage(String code, String? message) {
+    switch (code) {
+      case 'unauthenticated':
+        return 'Anda harus login terlebih dahulu';
+      case 'not-found':
+        return message ?? 'Produk tidak ditemukan';
+      case 'invalid-argument':
+        return message ?? 'Data tidak valid';
+      case 'permission-denied':
+        return 'Tidak memiliki izin akses';
+      case 'unavailable':
+        return 'Layanan tidak tersedia, coba lagi nanti';
+      case 'internal':
+        return 'Terjadi kesalahan server';
+      default:
+        return message ?? 'Terjadi kesalahan: $code';
+    }
+  }
+}

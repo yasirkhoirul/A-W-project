@@ -25,7 +25,10 @@ void main() {
 
   setUp(() {
     mockClient = MockClient();
-    datasource = PengantaranRemoteDatasourceImpl(mockClient);
+    datasource = PengantaranRemoteDatasourceImpl(
+      mockClient,
+      apiKey: 'test-api-key',
+    );
   });
 
   group('getProvinsi', () {
@@ -350,8 +353,12 @@ void main() {
   });
 
   group("trackWaybill", () {
-    const tUrl =
-        '${Baseurl.baseurlRajaOngkir}track/waybill?waybill=CM94942485503&courier=jne';
+    final tUri = Uri.parse('${Baseurl.baseurlRajaOngkir}track/waybill')
+        .replace(queryParameters: {
+      'awb': 'CM94942485503',
+      'courier': 'jne',
+      'last_phone_number': '8123456789',
+    });
     final tRequest = TrackRequestModel(
       waybill: 'CM94942485503',
       courier: 'jne',
@@ -364,7 +371,7 @@ void main() {
       final jsonString = await jsonFile.readAsString();
 
       when(
-        mockClient.get(Uri.parse(tUrl), headers: anyNamed('headers')),
+        mockClient.post(tUri, headers: anyNamed('headers')),
       ).thenAnswer((_) async => http.Response(jsonString, 200));
 
       // Act
@@ -388,7 +395,7 @@ void main() {
         final jsonString = await jsonFile.readAsString();
 
         when(
-          mockClient.get(Uri.parse(tUrl), headers: anyNamed('headers')),
+          mockClient.post(tUri, headers: anyNamed('headers')),
         ).thenAnswer((_) async => http.Response(jsonString, 200));
 
         // Act
@@ -405,7 +412,7 @@ void main() {
     test('should throw HttpApiException when status code is not 200', () async {
       // Arrange
       when(
-        mockClient.get(Uri.parse(tUrl), headers: anyNamed('headers')),
+        mockClient.post(tUri, headers: anyNamed('headers')),
       ).thenAnswer((_) async => http.Response('Not Found', 404));
 
       // Act
@@ -420,7 +427,7 @@ void main() {
       () async {
         // Arrange
         when(
-          mockClient.get(Uri.parse(tUrl), headers: anyNamed('headers')),
+          mockClient.post(tUri, headers: anyNamed('headers')),
         ).thenThrow(const SocketException('No Internet'));
 
         // Act

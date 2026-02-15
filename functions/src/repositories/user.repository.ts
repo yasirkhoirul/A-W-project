@@ -1,5 +1,5 @@
-import {getFirestore, FieldValue} from "firebase-admin/firestore";
-import {UserModel, CreateUserInput} from "../models/user.model.js";
+import { getFirestore, FieldValue } from "firebase-admin/firestore";
+import { UserModel, CreateUserInput } from "../models/user.model.js";
 
 /**
  * User Repository
@@ -26,6 +26,7 @@ export class UserRepository {
 
       phoneNumber: input.phoneNumber || null,
       address: null,
+      fcmTokens: [],
       createdAt: FieldValue.serverTimestamp(),
       updatedAt: FieldValue.serverTimestamp(),
     };
@@ -43,5 +44,17 @@ export class UserRepository {
   async userExists(uid: string): Promise<boolean> {
     const doc = await this.db.collection(this.collection).doc(uid).get();
     return doc.exists;
+  }
+
+  /**
+     * Ambil FCM tokens dari user document
+     * @param {string} uid User ID
+     * @return {Promise<string[]>} Array of FCM tokens
+     */
+  async getFcmTokens(uid: string): Promise<string[]> {
+    const doc = await this.db.collection(this.collection).doc(uid).get();
+    if (!doc.exists) return [];
+    const data = doc.data();
+    return (data?.fcmTokens as string[]) || [];
   }
 }

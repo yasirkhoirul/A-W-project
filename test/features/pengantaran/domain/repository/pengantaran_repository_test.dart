@@ -4,7 +4,7 @@ import 'package:a_and_w/features/pengantaran/data/datasource/pengantaran_remote_
 import 'package:a_and_w/features/pengantaran/data/model/distrik_response.dart';
 import 'package:a_and_w/features/pengantaran/data/model/kota_response.dart';
 import 'package:a_and_w/features/pengantaran/data/model/provinsi_response.dart';
-import 'package:a_and_w/features/pengantaran/data/repository_implemntation/pengantaran_repository_impl.dart';
+import 'package:a_and_w/features/pengantaran/data/repository_implementation/pengantaran_repository_impl.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -67,7 +67,7 @@ void main() {
       // Assert
       expect(
         result,
-        equals(const Left(UnknownFailure('Data provinsi kosong'))),
+        equals(const Left(UnknownFailure('Exception: Data provinsi kosong'))),
       );
       verify(mockRemoteDatasource.getProvinsi());
     });
@@ -88,7 +88,7 @@ void main() {
       // Assert
       expect(
         result,
-        equals(const Left(UnknownFailure('Data provinsi kosong'))),
+        equals(const Left(UnknownFailure('Exception: Data provinsi kosong'))),
       );
       verify(mockRemoteDatasource.getProvinsi());
     });
@@ -199,7 +199,7 @@ void main() {
       final result = await repository.getKota(tProvinsiId);
 
       // Assert
-      expect(result, equals(const Left(UnknownFailure('Data kota kosong'))));
+      expect(result, equals(const Left(UnknownFailure('Exception: Data kota kosong'))));
       verify(mockRemoteDatasource.getKota(tProvinsiId));
     });
 
@@ -217,7 +217,7 @@ void main() {
       final result = await repository.getKota(tProvinsiId);
 
       // Assert
-      expect(result, equals(const Left(UnknownFailure('Data kota kosong'))));
+      expect(result, equals(const Left(UnknownFailure('Exception: Data kota kosong'))));
       verify(mockRemoteDatasource.getKota(tProvinsiId));
     });
 
@@ -330,7 +330,7 @@ void main() {
       final result = await repository.getDistrik(tKotaId);
 
       // Assert
-      expect(result, equals(const Left(UnknownFailure('Data distrik kosong'))));
+      expect(result, equals(const Left(UnknownFailure('Exception: Data distrik kosong'))));
       verify(mockRemoteDatasource.getDistrik(tKotaId));
     });
 
@@ -348,7 +348,7 @@ void main() {
       final result = await repository.getDistrik(tKotaId);
 
       // Assert
-      expect(result, equals(const Left(UnknownFailure('Data distrik kosong'))));
+      expect(result, equals(const Left(UnknownFailure('Exception: Data distrik kosong'))));
       verify(mockRemoteDatasource.getDistrik(tKotaId));
     });
 

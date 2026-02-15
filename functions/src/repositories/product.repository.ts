@@ -101,6 +101,7 @@ export class ProductRepository {
       price: input.price,
       category: input.category,
       images: imageUrls,
+      weight: input.weight,
       createdAt: FieldValue.serverTimestamp(),
       updatedAt: FieldValue.serverTimestamp(),
       createdBy: createdBy,

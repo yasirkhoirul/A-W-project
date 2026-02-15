@@ -7,6 +7,7 @@ class KeranjangEntity extends Equatable {
   final int price;
   final String category;
   final String image;
+  final int weight;
   final int quantity;
 
   const KeranjangEntity({
@@ -16,6 +17,7 @@ class KeranjangEntity extends Equatable {
     required this.price,
     required this.category,
     required this.image,
+    required this.weight,
     required this.quantity,
   });
 
@@ -27,6 +29,7 @@ class KeranjangEntity extends Equatable {
     price,
     category,
     image,
+    weight,
     quantity,
   ];
 }

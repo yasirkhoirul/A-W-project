@@ -67,7 +67,7 @@ exports.createProduct = (0, https_1.onCall)({
     if (!request.auth) {
         throw new https_1.HttpsError("unauthenticated", "User must be authenticated to create products");
     }
-    const { name, description, price, category, images } = request.data;
+    const { name, description, price, category, images, weight } = request.data;
     // Validate required fields
     if (!name || typeof name !== "string") {
         throw new https_1.HttpsError("invalid-argument", "Product name is required");
@@ -77,6 +77,9 @@ exports.createProduct = (0, https_1.onCall)({
     }
     if (typeof price !== "number" || price < 0) {
         throw new https_1.HttpsError("invalid-argument", "Product price must be a positive number");
+    }
+    if (typeof weight !== "number" || weight <= 0) {
+        throw new https_1.HttpsError("invalid-argument", "Product weight must be a positive number (in grams)");
     }
     if (!category || !validCategories.includes(category)) {
         throw new https_1.HttpsError("invalid-argument", `Product category must be one of: ${validCategories.join(", ")}`);
@@ -91,6 +94,7 @@ exports.createProduct = (0, https_1.onCall)({
             price,
             category,
             images,
+            weight,
         };
         const product = await productService.createProduct(input, request.auth.uid);
         logger.info(`Product created via callable: ${product.id}`);
@@ -103,6 +107,7 @@ exports.createProduct = (0, https_1.onCall)({
                 price: product.price,
                 category: product.category,
                 images: product.images,
+                weight: product.weight,
             },
         };
     }

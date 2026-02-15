@@ -7,6 +7,7 @@ class BarangEntity extends Equatable {
   final int price;
   final String category;
   final List<String> images;
+  final int weight; // Berat dalam gram
   final String createdBy;
 
   const BarangEntity({
@@ -16,6 +17,7 @@ class BarangEntity extends Equatable {
     required this.price,
     required this.category,
     required this.images,
+    required this.weight,
     required this.createdBy,
   });
 
@@ -27,6 +29,7 @@ class BarangEntity extends Equatable {
     price,
     category,
     images,
+    weight,
     createdBy,
   ];
 }

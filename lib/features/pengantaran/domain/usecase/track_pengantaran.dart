@@ -19,6 +19,14 @@ class TrackPengantaran {
     if (dataTrackRequestEntity.lastPhoneNumber == 0) {
       return const Left(UnknownFailure('Last phone number is required'));
     }
-    return await pengantaranRepository.getTrack(dataTrackRequestEntity);
+    if (dataTrackRequestEntity.lastPhoneNumber < 10000) {
+      return const Left(UnknownFailure('Phone number invalid. Minimum 5 digits required'));
+    }
+    DataTrackRequestEntity validatedData = DataTrackRequestEntity(
+      courier: dataTrackRequestEntity.courier,
+      waybill: dataTrackRequestEntity.waybill,
+      lastPhoneNumber: dataTrackRequestEntity.lastPhoneNumber % 100000,
+    );
+    return await pengantaranRepository.getTrack(validatedData);
   }
 }

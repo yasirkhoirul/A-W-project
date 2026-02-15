@@ -3,6 +3,7 @@ import 'package:a_and_w/features/auth/domain/entities/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' hide FirebaseException;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart' as firebase_core;
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:a_and_w/core/exceptions/exceptions.dart';
 import 'package:logger/web.dart';
@@ -14,17 +15,21 @@ abstract class RemoteAuthDataSource {
   Stream<ProfileModel?> getProfile(String uid);
   Future<void> updateProfile(ProfileModel profile);
   Future<void> signOut();
+  Future<void> saveFcmToken(String uid);
+  Future<void> removeFcmToken(String uid);
 }
 
 class RemoteAuthDatasourceImpl implements RemoteAuthDataSource {
   final FirebaseAuth firebaseAuth;
   final FirebaseFirestore firebaseFirestore;
   final GoogleSignIn googleSignIn;
+  final FirebaseMessaging firebaseMessaging;
 
   const RemoteAuthDatasourceImpl({
     required this.firebaseAuth,
     required this.googleSignIn,
     required this.firebaseFirestore,
+    required this.firebaseMessaging,
   });
 
   @override
@@ -122,12 +127,12 @@ class RemoteAuthDatasourceImpl implements RemoteAuthDataSource {
         .map((event) {
           final data = event.data();
           Logger().d('Raw data dari Firestore: $data');
-          
+
           if (data == null) {
             Logger().d('Data null untuk uid: $uid');
             return null;
           }
-          
+
           final profile = ProfileModel.fromJson(data);
           Logger().d('Profile berhasil diparsing: ${profile.toString()}');
           return profile;
@@ -146,19 +151,56 @@ class RemoteAuthDatasourceImpl implements RemoteAuthDataSource {
     try {
       final data = profile.toJson();
       data.removeWhere((key, value) => value == null);
-      
+
       Logger().d('Updating profile for uid: ${profile.uid} with data: $data');
-      await firebaseFirestore
-          .collection('users')
-          .doc(profile.uid)
-          .update(data);
-      
+      await firebaseFirestore.collection('users').doc(profile.uid).update(data);
     } on firebase_core.FirebaseException catch (e) {
       Logger().e('FirebaseException saat update profile: ${e.code}');
       throw DatabaseException.fromFirebase(e);
     } catch (e) {
       Logger().e('Unknown error saat update profile: $e');
       throw UnknownException(e.toString());
+    }
+  }
+
+  @override
+  Future<void> saveFcmToken(String uid) async {
+    try {
+      final token = await firebaseMessaging.getToken();
+      if (token == null) {
+        Logger().w('FCM token is null, skipping save');
+        return;
+      }
+
+      Logger().d('Saving FCM token for uid: $uid');
+      await firebaseFirestore.collection('users').doc(uid).update({
+        'fcmTokens': FieldValue.arrayUnion([token]),
+      });
+      Logger().d('FCM token saved successfully');
+    } catch (e) {
+      Logger().w('Failed to save FCM token: $e');
+    }
+  }
+
+  @override
+  Future<void> removeFcmToken(String uid) async {
+    try {
+      final token = await firebaseMessaging.getToken();
+
+      if (token == null) {
+        Logger().w('FCM token is null, skipping remove');
+        return;
+      }
+
+      Logger().d('Removing FCM token for uid: $uid');
+      await firebaseFirestore.collection('users').doc(uid).update({
+        'fcmTokens': FieldValue.arrayRemove([token]),
+      });
+
+      await firebaseMessaging.deleteToken();
+      Logger().d('FCM token removed successfully');
+    } catch (e) {
+      Logger().e('Error removing FCM token: $e');
     }
   }
 }

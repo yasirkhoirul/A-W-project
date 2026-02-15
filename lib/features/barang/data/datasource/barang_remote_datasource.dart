@@ -23,36 +23,24 @@ class BarangRemoteDatasourceImpl implements BarangRemoteDatasource {
 
   @override
   Future<BarangModel> getBarang(String id) async {
-    try {
-      final doc = await _productsRef.doc(id).get();
-      if (!doc.exists) {
-        throw const UnknownException('Barang tidak ditemukan');
-      }
-      return _docToModel(doc);
-    } catch (e) {
-      rethrow;
+    final doc = await _productsRef.doc(id).get();
+    if (!doc.exists) {
+      throw const UnknownException('Barang tidak ditemukan');
     }
+    return _docToModel(doc);
   }
 
   @override
   Future<List<BarangModel>> getAllBarang() async {
-    try {
-      final snapshot = await _productsRef.get();
-      return snapshot.docs.map(_docToModel).toList();
-    } catch (e) {
-      rethrow;
-    }
+    final snapshot = await _productsRef.get();
+    return snapshot.docs.map(_docToModel).toList();
   }
 
   @override
   Future<List<BarangModel>> getBarangByKategori(KategoriBarang kategori) async {
-    try {
-      final snapshot = await _productsRef
-          .where('category', isEqualTo: kategori.value)
-          .get();
-      return snapshot.docs.map(_docToModel).toList();
-    } catch (e) {
-      rethrow;
-    }
+    final snapshot = await _productsRef
+        .where('category', isEqualTo: kategori.value)
+        .get();
+    return snapshot.docs.map(_docToModel).toList();
   }
 }
